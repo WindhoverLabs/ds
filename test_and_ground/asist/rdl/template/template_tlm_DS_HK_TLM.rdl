@@ -20,7 +20,6 @@
 !       HISTORY: 
 !	16MAY11	WFM	: Removed the File Info State structure
 !	05JUL11	WFM	: Updated types to match DS source changes
-!	22JAN15	WFM	: Added Filter Table filename
 !
 !==============================================================================
 !
@@ -66,8 +65,6 @@ PACKET Pxxxx APID=nnnn, DESC="$sc $cpu DS Telemetry Data Packet", STALE = 36
   ULI $sc_$cpu_DS_FilteredPktCnt DESC="The number of packets that failed the filter test"
 !
   ULI $sc_$cpu_DS_PassedPktCnt   DESC="The number of packets that passed filter test"
-!
-  CHAR $sc_$cpu_DS_FiltTblName[OS_MAX_PATH_LEN]   DESC="The filter table filename"
 !
 !  END                !END APPEND RECORD FUNCTION
 !

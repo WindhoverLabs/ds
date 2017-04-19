@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: ds_appdefs.h 1.4.1.1 2015/02/28 17:13:42EST sstrege Exp  $
+**   $Id: ds_appdefs.h 1.3 2017/01/25 12:05:30EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -15,19 +15,6 @@
 **  The CFS Data Storage (DS) Application header file
 **
 ** Notes:
-**
-** $Log: ds_appdefs.h  $
-** Revision 1.4.1.1 2015/02/28 17:13:42EST sstrege 
-** Added copyright information
-** Revision 1.4 2010/10/28 11:26:45EDT lwalling 
-** Add definitions for DS_FILE_HEADER_NONE, DS_FILE_HEADER_CFE, DS_FILE_HEADER_GPM
-** Revision 1.3 2010/10/26 16:18:08EDT lwalling 
-** Move DS_DEF_ENABLE_STATE from local header to platform config file
-** Revision 1.2 2009/08/31 17:51:38EDT lwalling 
-** Convert calls from DS_TableVerifyString() to CFS_VerifyString() with descriptive arg names
-** Revision 1.1 2009/08/27 16:35:21EDT lwalling 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/src/project.pj
 **
 *************************************************************************/
 #ifndef _ds_appdefs_h_

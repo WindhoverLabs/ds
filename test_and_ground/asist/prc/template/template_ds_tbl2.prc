@@ -16,11 +16,14 @@ PROC $sc_$cpu_ds_tbl2
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	11/04/09	Walt Moleski	Inital implemetation.
 ;       12/08/10        Walt Moleski    Modified the procedure to use variables
 ;                                       for the application name and ram disk.
+;       01/31/17        Walt Moleski    Updated for DS 2.5.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -53,14 +56,7 @@ local timeFileMID = 0x1001
 local DSAppName = "DS"  
 local fileTblName = DSAppName & "." & DS_DESTINATION_TBL_NAME
 local filterTblName = DSAppName & "." & DS_FILTER_TBL_NAME
-
-if ("$CPU" = "CPU2") then
-  fileAppid = 0x0F84
-  filterAppid = 0x0F85
-elseif ("$CPU" = "CPU3") then
-  fileAppid = 0x0F95
-  filterAppid = 0x0F96
-endif
+local hostCPU = "$CPU"
 
 ;; Setup the Destination File Table
 ;; Entry 1
@@ -101,7 +97,7 @@ local maxEntry = DS_DEST_FILE_CNT - 1
 ;;local endmnemonic = "$SC_$CPU_DS_DF_TBL[" & maxEntry & "].SeqCnt"
 local endmnemonic = "$SC_$CPU_DS_DF_TBL[1].SeqCnt"
 
-s create_tbl_file_from_cvt("$CPU",fileAppid,"File Write Test File Table","ds_fwfile.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,fileAppid,"File Write Test File Table","ds_fwfile.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 ;; Setup the Packet Filter Table
 $SC_$CPU_DS_PF_TBL_Description  = "File Write Test"
@@ -152,7 +148,7 @@ enddo
 
 endmnemonic = "$SC_$CPU_DS_PF_TBL[" & maxEntry & "].FilterParams[" & maxFilterParams & "].O_Value"
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"File Write Test Filter Table","ds_fwfilter.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"File Write Test Filter Table","ds_fwfilter.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 %liv (log_procedure) = logging
 

@@ -1,10 +1,10 @@
 core Flight System (cFS) Data Storage Application (DS) 
 Open Source Release Readme
 
-DS Release 2.4.1 
+DS Release 2.5.1 
 
 Date: 
-August 3, 2015
+February 15, 2017
 
 Introduction:
   The Data Storage application (DS) is a core Flight System (cFS) application 
@@ -14,7 +14,8 @@ Introduction:
   set of reusable applications developed by NASA Goddard Space Flight Center.  
   This framework is used as the basis for the flight software for satellite data 
   systems and instruments, but can be used on other embedded systems.  More 
-  information on the cFS can be found at http://cfs.gsfc.nasa.gov
+  information on the cFS can be found at http://cfs.gsfc.nasa.gov and 
+  http://coreflightsystem.org
   
   The DS application is used for storing software bus messages in files. These 
   files are generally stored on a storage device such as a solid state recorder 
@@ -30,7 +31,7 @@ Introduction:
   available in cfs-ds-2.4.0-OSS-release/docs/users_guide
   
   There are also "Quick start" instructions provided in 
-  cFE-6.4.2-OSS-release/cfe-OSS-readme.txt   
+  cFE-6.5.0-OSS-release/cfe-OSS-readme.txt   
   
   The OSAL is available at http://sourceforge.net/projects/osal/ and 
   github.com/nasa/
@@ -42,23 +43,23 @@ Introduction:
  
  
 Software Included:
-  Data Storage application (DS) 2.4.1
+  Data Storage application (DS) 2.5.1
   
  
 Software Required:
 
- Operating System Abstraction Layer 4.1.1 or higher can be 
+ Operating System Abstraction Layer 4.2.0 or higher can be 
  obtained at http://sourceforge.net/projects/osal or 
  github.com/nasa/osal
  
- core Flight Executive 6.4.2 or higher can be obtained at
+ core Flight Executive 6.5.0 or higher can be obtained at
  http://sorceforge.net/projects/coreflightexec
 
   
 Runtime Targets Supported:
-   The "out of the box" targets in the cFE 6.4.1 distribution include:
+   The "out of the box" targets in the cFE 6.5.0 distribution include:
      1. 32 bit x86 Linux ( CentOS 6.x )
-     2. Motorola MCP750 PowerPC vxWorks 6.4
+     2. Motorola MCP750 PowerPC vxWorks 6.x
 
 Other targets: 
     Other targets are included, but may take additional work to

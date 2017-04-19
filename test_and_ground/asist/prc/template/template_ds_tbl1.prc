@@ -16,11 +16,14 @@ PROC $sc_$cpu_ds_tbl1
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	11/03/09	Walt Moleski	Inital implemetation.
 ;       12/08/10        Walt Moleski    Modified the procedure to use variables
 ;                                       for the application name and ram disk.
+;       01/31/17        Walt Moleski    Updated for DS 2.5.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -55,22 +58,7 @@ local dsSendHKMID = 0x18BC  ; DS_SEND_HK_MID
 local DSAppName = "DS"  
 local fileTblName = DSAppName & "." & DS_DESTINATION_TBL_NAME
 local filterTblName = DSAppName & "." & DS_FILTER_TBL_NAME
-
-if ("$CPU" = "CPU2") then
-  fileAppid = 0x0F84
-  filterAppid = 0x0F85
-  filter1MID = 0x0987   ; MM HK
-  filter2MID = 0x09A4   ; CS HK
-  dsCmdMID = 0x19BB     ; DS_CMD_MID
-  dsSendHKMID = 0x19BC  ; DS_SEND_HK_MID
-elseif ("$CPU" = "CPU3") then
-  fileAppid = 0x0F95
-  filterAppid = 0x0F96
-  filter1MID = 0x0A87   ; MM HK
-  filter2MID = 0x0AA4   ; CS HK
-  dsCmdMID = 0x1ABB     ; DS_CMD_MID
-  dsSendHKMID = 0x1ABC  ; DS_SEND_HK_MID
-endif
+local hostCPU = "$CPU"
 
 ;; Setup the Destination File Table
 ;; Entry 1
@@ -111,7 +99,7 @@ local maxEntry = DS_DEST_FILE_CNT - 1
 ;;local endmnemonic = "$SC_$CPU_DS_DF_TBL[" & maxEntry & "].SeqCnt"
 local endmnemonic = "$SC_$CPU_DS_DF_TBL[1].SeqCnt"
 
-s create_tbl_file_from_cvt("$CPU",fileAppid,"General Command Test File Table","ds_gcfile.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,fileAppid,"General Command Test File Table","ds_gcfile.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 ;; Setup the Packet Filter Table
 $SC_$CPU_DS_PF_TBL_Description  = "General Commands Test"
@@ -162,7 +150,7 @@ enddo
 
 endmnemonic = "$SC_$CPU_DS_PF_TBL[" & maxEntry & "].FilterParams[" & maxFilterParams & "].O_Value"
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"General Command Test Filter Table","ds_gcfilter.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"General Command Test Filter Table","ds_gcfilter.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 %liv (log_procedure) = logging
 

@@ -7,7 +7,8 @@ proc $sc_$cpu_ds_start_apps (step_num)
 ; History:
 ;  29SEP09 WFM	Initial development of this proc
 ;  08DEC10 WFM	Added variable for application name and ram directory name
-;
+;  31JAN17 WFM	Updated for DS 2.5.0.0 using CPU1 for commanding and added a
+;		hostCPU variable to start apps on
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Turn off logging for the includes
@@ -29,11 +30,12 @@ local stream1, stream2
 local subStepNum = 1
 local DSAppName = "DS"  
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 
 write ";*********************************************************************"
 write "; Step ",step_num, ".1: Determine if the applications are running."
 write ";*********************************************************************"
-start get_file_to_cvt (ramDir, "cfe_es_app_info.log", "$sc_$cpu_es_app_info.log", "$CPU")
+start get_file_to_cvt (ramDir, "cfe_es_app_info.log", "$sc_$cpu_es_app_info.log", hostCPU)
 
 found_app1 = FALSE
 found_app2 = FALSE
@@ -85,7 +87,7 @@ if (found_app1 = FALSE) then
   ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
   ut_setupevents "$SC", "$CPU", {DSAppName}, DS_INIT_EID, "INFO", 2
 
-  s load_start_app (DSAppName,"$CPU","DS_AppMain")
+  s load_start_app (DSAppName,hostCPU,"DS_AppMain")
 
   ; Wait for app startup events
   ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1, 70
@@ -104,14 +106,6 @@ if (found_app1 = FALSE) then
   stream1 = x'08B8'
   stream2 = x'08B9'
 
-  if ("$CPU" = "CPU2") then
-    stream1 = x'09B8'
-    stream2 = x'09B9'
-  elseif ("$CPU" = "CPU3") then
-    stream1 = x'0AB8'
-    stream2 = x'0AB9'
-  endif
-
   /$SC_$CPU_TO_ADDPACKET STREAM=stream1 PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
   wait 2
   /$SC_$CPU_TO_ADDPACKET STREAM=stream2 PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
@@ -127,7 +121,7 @@ if (found_app2 = FALSE) then
   ut_setupevents "$SC", "$CPU", "CFE_ES", CFE_ES_START_INF_EID, "INFO", 1
   ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_INIT_INF_EID, "INFO", 2
 
-  s load_start_app ("TST_DS","$CPU","TST_DS_AppMain")
+  s load_start_app ("TST_DS",hostCPU,"TST_DS_AppMain")
 
   ; Wait for app startup events
   ut_tlmwait  $SC_$CPU_find_event[2].num_found_messages, 1
@@ -145,12 +139,6 @@ if (found_app2 = FALSE) then
 
   ;; CPU1 is the default
   stream2 = x'0942'
-
-  if ("$CPU" = "CPU2") then
-     stream2 = x'0A42'
-  elseif ("$CPU" = "CPU3") then
-     stream2 = x'0B42'
-  endif
 
   /$SC_$CPU_TO_ADDPACKET STREAM=stream2 PKT_SIZE=X'0' PRIORITY=X'0' RELIABILITY=X'0' BUFLIMIT=x'4'
 

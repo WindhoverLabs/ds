@@ -17,12 +17,15 @@ PROC $sc_$cpu_ds_badfiltertbls
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	11/23/09	Walt Moleski	Inital implemetation.
 ;       12/08/10        Walt Moleski    Modified to use the table name specified
 ;                                       in the ds_platform_cfg.h file and added
 ;                                       a variable for the application name.
+;       01/31/17        Walt Moleski	Updated for DS 2.5.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -50,12 +53,7 @@ write ";***********************************************************************"
 local filterAppid = 0x0F77
 local DSAppName = "DS"
 local filterTblName = DSAppName & "." & DS_FILTER_TBL_NAME
-
-if ("$CPU" = "CPU2") then
-  filterAppid = 0x0F85
-elseif ("$CPU" = "CPU3") then
-  filterAppid = 0x0F96
-endif
+local hostCPU = "$CPU"
 
 ;; Setup the Packet Filter Table
 ;; Descriptor text is limited by DS_DESCRIPTOR_BUFSIZE
@@ -160,27 +158,27 @@ enddo
 local endmnemonic = "$SC_$CPU_DS_PF_TBL[" & maxEntry & "].FilterParams["
 endmnemonic = endmnemonic & maxFilterParams & "].O_Value"
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"Invalid Filter Table Description","ds_badfilter1.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"Invalid Filter Table Description","ds_badfilter1.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 ;; Set the Table description text to a valid string
 $SC_$CPU_DS_PF_TBL_Description  = "Reset No CDS Test"
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"Invalid Filter Table Entry #1 Index","ds_badfilter2.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"Invalid Filter Table Entry #1 Index","ds_badfilter2.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 ;; Set the Index to a valid file
 $SC_$CPU_DS_PF_TBL[0].FilterParams[0].Index = 0
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"Invalid Filter Table Entry #2 Type","ds_badfilter3.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"Invalid Filter Table Entry #2 Type","ds_badfilter3.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 ;; Set the Filter Type back to valid
 $SC_$CPU_DS_PF_TBL[1].FilterParams[0].FilterType = DS_BY_TIME
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"Invalid Filter Table Entry #3 N>X","ds_badfilter4.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"Invalid Filter Table Entry #3 N>X","ds_badfilter4.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 ;; Set the N Value to a valid number
 $SC_$CPU_DS_PF_TBL[2].FilterParams[0].N_Value = 1
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"Invalid Filter Table Entry #4 O>X","ds_badfilter5.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"Invalid Filter Table Entry #4 O>X","ds_badfilter5.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 %liv (log_procedure) = logging
 

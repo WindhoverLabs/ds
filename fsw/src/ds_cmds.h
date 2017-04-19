@@ -1,7 +1,7 @@
 /************************************************************************
-**   $Id: ds_cmds.h 1.6.1.1 2015/02/28 17:13:41EST sstrege Exp  $
+**  $Id: ds_cmds.h 1.3 2017/01/25 12:05:30EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -12,22 +12,6 @@
 **
 **  CFS Data Storage (DS) command handler header file
 **
-** $Log: ds_cmds.h  $
-** Revision 1.6.1.1 2015/02/28 17:13:41EST sstrege 
-** Added copyright information
-** Revision 1.6 2011/07/12 17:42:19EDT lwalling 
-** Add function prototype for DS_CmdCloseAll()
-** Revision 1.5 2011/05/19 11:32:58EDT lwalling 
-** Add new command handler - DS_CmdAddMID
-** Revision 1.4 2011/05/06 15:05:16EDT lwalling 
-** Create prototype for get file info packet command handler
-** Revision 1.3 2009/08/27 16:32:26EDT lwalling 
-** Updates from source code review
-** Revision 1.2 2009/06/12 11:43:31EDT lwalling 
-** Added Doxygen comments
-** Revision 1.1 2009/05/26 14:25:26EDT lwalling 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/src/project.pj
 *************************************************************************/
 
 #ifndef _ds_cmds_h_

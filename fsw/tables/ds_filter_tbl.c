@@ -1,9 +1,9 @@
 
 /************************************************************************
 **
-** $Id: ds_filter_tbl.c 1.10.1.1 2015/02/28 17:14:03EST sstrege Exp  $
+** $Id: ds_filter_tbl.c 1.3 2017/01/25 12:05:48EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -22,31 +22,6 @@
 **       any packets.  There is no real purpose to this particular set of
 **       filters other than to provide an example of how various fields
 **       in the table might be used.
-**
-** $Log: ds_filter_tbl.c  $
-** Revision 1.10.1.1 2015/02/28 17:14:03EST sstrege 
-** Added copyright information
-** Revision 1.10 2012/07/20 16:49:36EDT aschoeni 
-** Restored subobject naming (but now as comments)
-** Revision 1.9 2012/07/20 16:32:24EDT aschoeni 
-** Fixed compiler warnings
-** Revision 1.8 2010/02/23 11:30:57EST lwalling 
-** Change application name from DS_APP to DS per CFS naming convention
-** Revision 1.7 2009/09/02 15:29:05EDT lwalling 
-** Member renamed from ds_filter.c to ds_filter_tbl.c in project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/tables/project.pj.
-** Revision 1.6 2009/09/02 14:29:05ACT lwalling 
-** Make table filenames match source filenames
-** Revision 1.5 2009/08/27 16:32:28EDT lwalling 
-** Member renamed from ds_sample_filtertable.c to ds_filter.c in project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/tables/project.pj.
-** Revision 1.4 2009/08/27 15:32:28ACT lwalling 
-** Updates from source code review
-** Revision 1.3 2009/08/13 09:59:48EDT lwalling 
-** Changed DS_ENABLE/DS_DISABLE to DS_BY_COUNT/DS_BY_TIME
-** Revision 1.2 2009/07/15 10:16:21EDT lwalling 
-** Include application header file due to changes made to platform configuration header file
-** Revision 1.1 2009/06/16 17:06:59EDT lwalling 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/tables/project.pj
 **
 *************************************************************************/
 

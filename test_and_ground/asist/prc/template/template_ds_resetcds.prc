@@ -12,7 +12,7 @@ PROC $sc_$cpu_ds_resetcds
 ;	occur if any anomalies exist with the data items stated in the
 ;	requirements.
 ;
-;	NOTE: This test SHOULD NOT be executed if the Save Critical Data 
+;	NOTE: This test SHOULD NOT be executed if the Make Tables Critical
 ;	configuration parameter is set to NO by the Mission.
 ;
 ;  Requirements Tested
@@ -105,7 +105,6 @@ PROC $sc_$cpu_ds_resetcds
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	11/25/09	Walt Moleski	Original Procedure.
 ;       12/08/10        Walt Moleski    Modified the procedure to use variables
@@ -113,6 +112,10 @@ PROC $sc_$cpu_ds_resetcds
 ;       01/22/15        Walt Moleski    Removed DS9001.1 from this procedure
 ;                                       since it was deleted for 2.4.0.0
 ;       07/24/15        Walt Moleski    Added DS9008 and tests for 2.4.1.0
+;       01/31/17        Walt Moleski    Updated for DS 2.5.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -181,6 +184,7 @@ local DSAppName = "DS"
 local fileTblName = DSAppName & "." & DS_DESTINATION_TBL_NAME
 local filterTblName = DSAppName & "." & DS_FILTER_TBL_NAME
 local ramDir = "RAM:0"
+local hostCPU = "$CPU"
 
 ;; Set the pkt and app Ids for the appropriate CPU
 ;; CPU1 is the default
@@ -188,18 +192,6 @@ fileTblPktId = "0F76"
 fileTblAppId = 3958
 filterTblPktId = "0F77"
 filterTblAppId = 3959
-
-if ("$CPU" = "CPU2") then
-  fileTblPktId = "0F84"
-  fileTblAppId = 3972
-  filterTblPktId = "0F85"
-  filterTblAppId = 3973
-elseif ("$CPU" = "CPU3") then
-  fileTblPktId = "0F95"
-  fileTblAppId = 3989
-  filterTblPktId = "0F96"
-  filterTblAppId = 3990
-endif
 
 write ";***********************************************************************"
 write ";  Step 1.0: Data Storage Test Setup."
@@ -210,9 +202,9 @@ write ";***********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -242,8 +234,8 @@ enddo
 write "==> Default Filter Table filename = '",filterFileName,"'"
 
 ;; Upload the files to $CPU
-s ftp_file("CF:0/apps", "ds_filtfile.tbl", destFileName, "$CPU", "P")
-s ftp_file("CF:0/apps", "ds_filtfilter.tbl", filterFileName, "$CPU", "P")
+s ftp_file("CF:0/apps", "ds_filtfile.tbl", destFileName, hostCPU, "P")
+s ftp_file("CF:0/apps", "ds_filtfilter.tbl", filterFileName, hostCPU, "P")
 
 wait 5
 
@@ -330,7 +322,7 @@ endif
 
 ;; Verify 9006
 ;; Dump the SB Routing table
-s get_file_to_cvt (ramDir, "cfe_sb_route.dat", "$cpu_sb_route.dat", "$CPU")
+s get_file_to_cvt (ramDir, "cfe_sb_route.dat", "$cpu_sb_route.dat", hostCPU)
 wait 5
 
 local filterMsgID
@@ -368,6 +360,25 @@ else
   ut_setrequirements DS_9006, "F"
 endif
 
+;; Verify DS_DEF_ENABLE_STATE
+if (DS_DEF_ENABLE_STATE = 1) then
+  if (p@$SC_$CPU_DS_AppEnaState = "Enabled") then
+    write "<*> Passed (9008) - DS Application State is enabled as expected."
+    ut_setrequirements DS_9008, "P"
+  else
+    write "<!> Failed (9008) - DS Application State is NOT enabled as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
+    ut_setrequirements DS_9008, "F"
+  endif
+else
+  if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
+    write "<*> Passed (9008) - DS Application State is disabled as expected."
+    ut_setrequirements DS_9008, "P"
+  else
+    write "<!> Failed (9008) - DS Application State is NOT disabled as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
+    ut_setrequirements DS_9008, "F"
+  endif
+endif
+
 wait 5
 
 write ";***********************************************************************"
@@ -389,7 +400,7 @@ write ";***********************************************************************"
 write ";  Step 1.6: Dump the Destination File and Packet Filter tables. "
 write ";***********************************************************************"
 ;; Dump the Packet Filter Tables
-s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl16","$CPU",filterTblPktId)
+s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl16",hostCPU,filterTblPktId)
 
 local filterEntryCount = 0
 ;; Verify the table contents loaded in Step 1.2
@@ -412,7 +423,7 @@ for i = 0 to DS_PACKETS_IN_FILTER_TABLE-1 do
 enddo
 
 ;; Dump the Destination File Table
-s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl17","$CPU",fileTblPktId)
+s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl17",hostCPU,fileTblPktId)
 
 local fileEntryCount = 0
 ;; Verify the table contents loaded in Step 1.2
@@ -593,19 +604,27 @@ endif
 
 wait 5
 
-;; For DS 2.4.1.0, disable the DS Application before the reset
+;; Change the DS Application state before the reset to verify state is preserved
+local expectedState
+cmdCtr = $SC_$CPU_DS_CMDPC + 1
 if (p@$SC_$CPU_DS_AppEnaState = "Enabled") then
-  cmdCtr = $SC_$CPU_DS_CMDPC + 1
+  expectedState = "Disabled"
   ;; Send the command
   /$SC_$CPU_DS_Disable
-  
-  ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
-  if (UT_TW_Status = UT_Success) then
-    write "<*> Passed - DS Application Disable command sent properly."
-  else
-    write "<!> Failed - DS Application Disable command did not increment CMDPC."
-  endif
+else
+  expectedState = "Enabled"
+  ;; Send the command
+  /$SC_$CPU_DS_Enable
 endif 
+  
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
+if (UT_TW_Status = UT_Success) then
+  write "<*> Passed - DS Application State command sent properly."
+else
+  write "<!> Failed - DS Application State command did not increment CMDPC."
+endif
+
+wait 5
 
 write ";*********************************************************************"
 write ";  Step 2.4: Perform a Processor Reset. "
@@ -614,9 +633,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -626,7 +645,7 @@ s $sc_$cpu_ds_start_apps("2.5")
 wait 5
 
 ;; Verify Packet Filter Table changes
-s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl25","$CPU",filterTblPktId)
+s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl25",hostCPU,filterTblPktId)
 
 ;; Verify the table contents reflect the commanded changes
 if ($SC_$CPU_DS_PF_TBL[3].FilterParams[0].N_Value = newNVal) AND ;;
@@ -640,7 +659,7 @@ else
 endif
 
 ;; Verify the Destination File Table changes
-s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl25","$CPU",fileTblPktId)
+s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl25",hostCPU,fileTblPktId)
 
 ;; Verify the table contains the change made to the 2nd entry
 if (p@$SC_$CPU_DS_DF_TBL[1].Pathname = newPath) then
@@ -669,7 +688,7 @@ endif
 
 ;; Verify 9006
 ;; Dump the SB Routing table
-s get_file_to_cvt (ramDir, "cfe_sb_route.dat", "$cpu_sb_route.dat", "$CPU")
+s get_file_to_cvt (ramDir, "cfe_sb_route.dat", "$cpu_sb_route.dat", hostCPU)
 wait 5
 
 filterEntries = 0
@@ -706,15 +725,15 @@ else
   ut_setrequirements DS_9006, "F"
 endif
 
-;; For DS 2.4.1.0, check the new config parameter DS_CDS_ENABLE_STATE
+;; Check the DS state based upon the DS_CDS_ENABLE_STATE parameter
 ;; If this parameter is set to 1, the DS Application State is preserved.
 ;; Otherwise, the Default state should be set
 if (DS_CDS_ENABLE_STATE = 1) then
-  if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
-    write "<*> Passed (9003) - DS Application State is disabled as expected."
+  if (p@$SC_$CPU_DS_AppEnaState = expectedState) then
+    write "<*> Passed (9003) - DS Application State is set as expected."
     ut_setrequirements DS_9003, "P"
   else
-    write "<!> Failed (9003) - DS Application State is NOT disabled as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
+    write "<!> Failed (9003) - DS Application State is NOT as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'. Expected '",expectedState,"'"
     ut_setrequirements DS_9003, "F"
   endif
 else
@@ -723,8 +742,7 @@ else
       write "<*> Passed (9008) - DS Application State is enabled as expected."
       ut_setrequirements DS_9008, "P"
     else
-      write "<!> Failed (9008) - DS Application State is NOT enabled as expected
-. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
+      write "<!> Failed (9008) - DS Application State is NOT enabled as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
       ut_setrequirements DS_9008, "F"
     endif
   else
@@ -735,6 +753,20 @@ else
       write "<!> Failed (9008) - DS Application State is NOT disabled as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
       ut_setrequirements DS_9008, "F"
     endif
+  endif
+endif
+
+;; Enable DS if the state is Disabled
+if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
+  cmdCtr = $SC_$CPU_DS_CMDPC + 1
+  ;; Send the command
+  /$SC_$CPU_DS_Enable
+
+  ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
+  if (UT_TW_Status = UT_Success) then
+    write "<*> Passed - DS Application State command sent properly."
+  else
+    write "<!> Failed - DS Application State command did not increment CMDPC."
   endif
 endif
 
@@ -955,7 +987,7 @@ s $sc_$cpu_ds_start_apps("3.3.2")
 wait 5
 
 ;; Verify Packet Filter Table changes
-s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl332","$CPU",filterTblPktId)
+s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl332",hostCPU,filterTblPktId)
 
 ;; Verify the table contents reflect the commanded changes
 if ($SC_$CPU_DS_PF_TBL[3].FilterParams[1].N_Value = newNVal) AND ;;
@@ -969,7 +1001,7 @@ else
 endif
 
 ;; Verify the Destination File Table changes
-s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl332","$CPU",fileTblPktId)
+s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl332",hostCPU,fileTblPktId)
 
 ;; Verify the table contains the change made to the 2nd entry
 if (p@$SC_$CPU_DS_DF_TBL[1].Basename = "newSeq") then
@@ -998,7 +1030,7 @@ endif
 
 ;; Verify 9006
 ;; Dump the SB Routing table
-s get_file_to_cvt (ramDir, "cfe_sb_route.dat", "$cpu_sb_route.dat", "$CPU")
+s get_file_to_cvt (ramDir, "cfe_sb_route.dat", "$cpu_sb_route.dat", hostCPU)
 wait 5
 
 filterEntries = 0
@@ -1033,6 +1065,20 @@ if (foundSubscription = filterEntries) then
 else
   write "<!> Failed (9006) - Expected ",filterEntries," message ID subscriptions. Found ",foundSubscription
   ut_setrequirements DS_9006, "F"
+endif
+
+;; Enable DS if the state is Disabled
+if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
+  cmdCtr = $SC_$CPU_DS_CMDPC + 1
+  ;; Send the command
+  /$SC_$CPU_DS_Enable
+
+  ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
+  if (UT_TW_Status = UT_Success) then
+    write "<*> Passed - DS Application State command sent properly."
+  else
+    write "<!> Failed - DS Application State command did not increment CMDPC."
+  endif
 endif
 
 wait 5
@@ -1142,7 +1188,7 @@ write ";  Step 4.0: Table Initialization Failure Tests"
 write ";*********************************************************************"
 write ";  Step 4.1: Remove the default Packet Filter table file."
 write ";***********************************************************************"
-s ftp_file("CF:0/apps", "na", filterFileName, "$CPU", "R")
+s ftp_file("CF:0/apps", "na", filterFileName, hostCPU, "R")
 wait 5
 
 write ";***********************************************************************"
@@ -1152,9 +1198,9 @@ write ";***********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -1177,20 +1223,10 @@ else
   write "<!> Failed - Table Load Error messages were NOT rcvd."
 endif
 
-;; DS 9001.1 was deleted in DS 2.4.0.0
-;; Check the DS Application State
-;;if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
-;;  write "<*> Passed (9001.1) - DS State set to disabled."
-;;  ut_setrequirements DS_90011, "P"
-;;else
-;;  write "<!> Failed (9001.1) - DS State set to '",p@$SC_$CPU_DS_AppEnaState,"'. Expected 'Disabled'"
-;;  ut_setrequirements DS_90011, "F"
-;;endif
-
 write ";***********************************************************************"
 write ";  Step 4.4: Remove the default Destination File Table file."
 write ";***********************************************************************"
-s ftp_file("CF:0/apps", "na", destFileName, "$CPU", "R")
+s ftp_file("CF:0/apps", "na", destFileName, hostCPU, "R")
 wait 5
 
 write ";***********************************************************************"
@@ -1200,9 +1236,9 @@ write ";***********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -1225,20 +1261,10 @@ else
   write "<!> Failed - Table Load Error messages were NOT rcvd."
 endif
 
-;; DS 9001.1 was deleted in DS 2.4.0.0
-;; Check the DS Application State
-;;if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
-;;  write "<*> Passed (9001.1) - DS State set to disabled."
-;;  ut_setrequirements DS_90011, "P"
-;;else
-;;  write "<!> Failed (9001.1) - DS State set to '",p@$SC_$CPU_DS_AppEnaState,"'. Expected 'Disabled'"
-;;  ut_setrequirements DS_90011, "F"
-;;endif
-
 write ";***********************************************************************"
 write ";  Step 4.7: Restore the default Packet Filter Table file."
 write ";***********************************************************************"
-s ftp_file("CF:0/apps", "ds_filtfilter.tbl", filterFileName, "$CPU", "P")
+s ftp_file("CF:0/apps", "ds_filtfilter.tbl", filterFileName, hostCPU, "P")
 wait 5
 
 write ";***********************************************************************"
@@ -1248,9 +1274,9 @@ write ";***********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -1273,20 +1299,10 @@ else
   write "<!> Failed - Table Load Error messages were NOT rcvd."
 endif
 
-;; DS 9001.1 was deleted in DS 2.4.0.0
-;; Check the DS Application State
-;;if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
-;;  write "<*> Passed (9001.1) - DS State set to disabled."
-;;  ut_setrequirements DS_90011, "P"
-;;else
-;;  write "<!> Failed (9001.1) - DS State set to '",p@$SC_$CPU_DS_AppEnaState,"'. Expected 'Disabled'"
-;;  ut_setrequirements DS_90011, "F"
-;;endif
-
 write ";***********************************************************************"
 write ";  Step 4.10: Restore the default Destination File Table file."
 write ";***********************************************************************"
-s ftp_file("CF:0/apps", "ds_filtfile.tbl", destFileName, "$CPU", "P")
+s ftp_file("CF:0/apps", "ds_filtfile.tbl", destFileName, hostCPU, "P")
 wait 5
 
 write ";***********************************************************************"
@@ -1296,9 +1312,9 @@ write ";***********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -1307,7 +1323,6 @@ write ";***********************************************************************"
 ;; Start the apps
 s $sc_$cpu_ds_start_apps("4.12")
 wait 5
-
 
 write ";*********************************************************************"
 write ";  Step 5.0: Table Corruption Tests"
@@ -1339,9 +1354,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -1354,7 +1369,7 @@ wait 5
 ;; will be a message in the UART indicating that the table was not restored.
 ;; Also, the table will be loaded from the initial file uploaded in Step 1.2
 ;; Dump the Packet Filter Table
-s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl53","$CPU",filterTblPktId)
+s get_tbl_to_cvt (ramDir,filterTblName,"A","$cpu_filtertbl53",hostCPU,filterTblPktId)
 
 ;; Verify the table contents reflect the original contents
 if ($SC_$CPU_DS_PF_TBL[3].FilterParams[1].N_Value = 0) AND ;;
@@ -1402,9 +1417,9 @@ write ";*********************************************************************"
 wait 10
 
 close_data_center
-wait 75
+wait 60
 
-cfe_startup $CPU
+cfe_startup {hostCPU}
 wait 5
 
 write ";***********************************************************************"
@@ -1417,7 +1432,7 @@ wait 5
 ;; will be a message in the UART indicating that the table was not restored.
 ;; Also, the table will be loaded from the initial file uploaded in Step 1.2
 ;; Dump the Destination File Table changes
-s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl57","$CPU",fileTblPktId)
+s get_tbl_to_cvt (ramDir,fileTblName,"A","$cpu_filetbl57",hostCPU,fileTblPktId)
 
 ;; Verify the table contains the change made to the 2nd entry
 if (p@$SC_$CPU_DS_DF_TBL[1].Pathname <> "/cf/") AND ;;
@@ -1450,7 +1465,7 @@ for i = 1 to 5 do
   ut_setupevents "$SC", "$CPU", "CFE_TBL",CFE_TBL_FILE_LOADED_INF_EID,"INFO", 1
   cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-  start load_table ("ds_badfilter" & i & ".tbl", "$CPU")
+  start load_table ("ds_badfilter" & i & ".tbl", hostCPU)
 
   ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
   if (UT_TW_Status = UT_Success) then
@@ -1559,7 +1574,7 @@ for i = 1 to 9 do
 
   cmdCtr = $SC_$CPU_TBL_CMDPC + 1
 
-  start load_table ("ds_badfile" & i & ".tbl", "$CPU")
+  start load_table ("ds_badfile" & i & ".tbl", hostCPU)
 
   ut_tlmwait $SC_$CPU_TBL_CMDPC, {cmdCtr}
   if (UT_TW_Status = UT_Success) then
@@ -1652,11 +1667,11 @@ write ";  Step 6.0: Clean-Up"
 write ";***********************************************************************"
 /$SC_$CPU_ES_POWERONRESET
 wait 10
-                                                                                
+
 close_data_center
-wait 75
-                                                                                
-cfe_startup $CPU
+wait 60
+
+cfe_startup {hostCPU}
 wait 5
 
 write "**** Requirements Status Reporting"

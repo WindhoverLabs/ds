@@ -1,7 +1,7 @@
 /************************************************************************
-**   $Id: ds_file.h 1.5.1.1 2015/02/28 17:13:56EST sstrege Exp  $
+**   $Id: ds_file.h 1.4 2017/01/25 12:05:41EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -12,20 +12,6 @@
 **
 **  CFS Data Storage (DS) file storage header file
 **
-** $Log: ds_file.h  $
-** Revision 1.5.1.1 2015/02/28 17:13:56EST sstrege 
-** Added copyright information
-** Revision 1.5 2010/11/08 10:26:10EST lwalling 
-** Add definition for DS_FileHeaderGPM_t, modify descriptions of header write and update functions
-** Revision 1.4 2009/08/27 16:32:30EDT lwalling 
-** Updates from source code review
-** Revision 1.3 2009/08/04 14:07:07EDT lwalling 
-** Minor cleanup prior to code review - improve comment
-** Revision 1.2 2009/06/12 11:48:46EDT lwalling 
-** Moved structure definitions to ds_msg.h, added Doxygen comments.
-** Revision 1.1 2009/05/26 14:25:27EDT lwalling 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/src/project.pj
 *************************************************************************/
 
 #ifndef _ds_file_h_
@@ -339,6 +325,13 @@ void DS_FileCloseDest(int32 FileIndex);
 **  \sa #DS_HkFileStatus_t, #DS_DestFileEntry_t
 */
 void DS_FileTestAge(uint32 ElapsedSeconds);
+
+/*
+** Prototype for utility function specific to GPM type file headers
+*/
+#if (DS_FILE_HEADER_TYPE == DS_FILE_HEADER_GPM)
+void DS_FileConvertGPM(char *Buffer, uint32 Value);
+#endif
 
 
 #endif /* _ds_file_h_ */

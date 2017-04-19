@@ -18,7 +18,6 @@ PROC $sc_$cpu_ds_badfiletbls
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	11/24/09	Walt Moleski	Inital implemetation.
 ;	12/08/10	Walt Moleski	Modified to use the table name specified
@@ -26,6 +25,10 @@ PROC $sc_$cpu_ds_badfiletbls
 ;					a variable for the application name.
 ;	03/19/13	Walt Moleski	Added 2 new cases to test an invalid
 ;					sequence count for both types
+;       01/31/17	Walt Moleski	Updated for DS 2.5.0.0 using CPU1 for
+;					commanding and added a hostCPU variable
+;					for the utility procs to connect to the
+;					proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -55,12 +58,7 @@ write ";***********************************************************************"
 local fileAppid = 0x0F76
 local DSAppName = "DS"
 local fileTblName = DSAppName & "." & DS_DESTINATION_TBL_NAME
-
-if ("$CPU" = "CPU2") then
-  fileAppid = 0x0F84
-elseif ("$CPU" = "CPU3") then
-  fileAppid = 0x0F95
-endif
+local hostCPU = "$CPU"
 
 ;; Setup the Destination File Table
 ;; The Description below is too long
@@ -159,40 +157,40 @@ $SC_$CPU_DS_DF_TBL[8].SeqCnt = DS_MAX_SEQUENCE_COUNT + 1
 local maxEntry = DS_DEST_FILE_CNT - 1
 local endmnemonic = "$SC_$CPU_DS_DF_TBL[8].SeqCnt"
 
-s create_tbl_file_from_cvt("$CPU",fileAppid,"Invalid File Table Description","ds_badfile1.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,fileAppid,"Invalid File Table Description","ds_badfile1.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 ;; Make the Table Description valid
 $SC_$CPU_DS_DF_TBL_Description  = "Reset No CDS Test"
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid File Table Null Path", "ds_badfile2.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid File Table Null Path", "ds_badfile2.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 $SC_$CPU_DS_DF_TBL[0].Pathname  = "/ram/"
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid File Table Name Type", "ds_badfile3.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid File Table Name Type", "ds_badfile3.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 $SC_$CPU_DS_DF_TBL[1].FileNameType = DS_BY_COUNT
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid File State Type", "ds_badfile4.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid File State Type", "ds_badfile4.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 $SC_$CPU_DS_DF_TBL[2].FileState = DS_ENABLED
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid File Table Max Size", "ds_badfile5.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid File Table Max Size", "ds_badfile5.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 $SC_$CPU_DS_DF_TBL[3].FileSize = 1024
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid File Table Max Age", "ds_badfile6.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid File Table Max Age", "ds_badfile6.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 $SC_$CPU_DS_DF_TBL[4].FileAge = 60
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid File Table Extension", "ds_badfile7.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid File Table Extension", "ds_badfile7.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 $SC_$CPU_DS_DF_TBL[5].Extension = ""
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid Sequence Num1", "ds_badfile8.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid Sequence Num1", "ds_badfile8.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 $SC_$CPU_DS_DF_TBL[6].SeqCnt = 0
 
-s create_tbl_file_from_cvt("$CPU", fileAppid, "Invalid Sequence Num2", "ds_badfile9.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU, fileAppid, "Invalid Sequence Num2", "ds_badfile9.tbl",fileTblName,"$SC_$CPU_DS_DF_TBL_Description",endmnemonic)
 
 %liv (log_procedure) = logging
 

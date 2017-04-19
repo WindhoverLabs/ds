@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: ds_msg.h 1.14.1.1 2015/02/28 17:14:05EST sstrege Exp  $
+**   $Id: ds_msg.h 1.4.1.1 2017/02/02 14:11:31EST mdeschu Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -15,39 +15,6 @@
 **  The CFS Data Storage (DS) Application header file
 **
 ** Notes:
-**
-** $Log: ds_msg.h  $
-** Revision 1.14.1.1 2015/02/28 17:14:05EST sstrege 
-** Added copyright information
-** Revision 1.14 2015/01/20 21:14:27EST sstrege 
-** Updated doxygen description for IgnoredPktCounter
-** Revision 1.13 2014/06/27 14:21:03EDT sjudy 
-** Added DS filter table file name to the DS hkp packet.
-** Revision 1.12 2011/07/12 17:45:12EDT lwalling 
-** Added structure definition for DS_CloseAllCmd_t
-** Revision 1.11 2011/07/04 14:18:10EDT lwalling 
-** Change command counter from 16 to 8 bits
-** Revision 1.10 2011/05/19 11:37:49EDT lwalling 
-** Add new command packet definition for DS_AddMidCmd_t
-** Revision 1.9 2011/05/06 15:02:39EDT lwalling 
-** reate get file info cmd packet, remove file info from hk packet, create file info tlm packet
-** Revision 1.8 2009/08/27 16:32:35EDT lwalling 
-** Updates from source code review
-** Revision 1.7 2009/08/04 14:06:36EDT lwalling 
-** Minor cleanup prior to code review - change dstlm to cfsdstlm
-** Revision 1.6 2009/06/12 11:54:05EDT lwalling 
-** Added application data structures - moved from module specific header files.
-** Revision 1.5 2009/05/26 14:21:07EDT lwalling 
-** Initial version of DS application
-** Revision 1.4 2009/04/18 09:47:27EDT dkobe 
-** Corrected a number of erroneous doxygen references
-** Revision 1.3 2009/04/18 09:36:11EDT dkobe 
-** Corrected doxygen aliases used in code
-** Revision 1.2 2008/12/02 14:46:09EST rmcgraw 
-** DCR4669:1 Abbreviated project name in history
-** Revision 1.1 2008/11/25 11:36:27EST rmcgraw 
-** Initial revision
-** Member added to CFS project
 **
 *************************************************************************/
 #ifndef _ds_msg_h_
@@ -97,6 +64,7 @@ typedef struct
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
     uint16  EnableState;                        /**< \brief Application enable/disable state */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
 } DS_AppStateCmd_t;
 
@@ -113,7 +81,8 @@ typedef struct
     uint16  MessageID;                          /**< \brief Message ID of existing entry in Packet Filter Table
                                                      \details DS defines Message ID zero to be unused */
     uint16  FilterParmsIndex;                   /**< \brief Index into Filter Parms Array */
-	uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
 } DS_FilterFileCmd_t;
 
@@ -131,6 +100,7 @@ typedef struct
                                                      \details DS defines Message ID zero to be unused */
     uint16  FilterParmsIndex;                   /**< \brief Index into Filter Parms Array */
     uint16  FilterType;                         /**< \brief Filter type (packet count or time) */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
 } DS_FilterTypeCmd_t;
 
@@ -151,6 +121,7 @@ typedef struct
     uint16  Algorithm_N;                        /**< \brief Algorithm value N (pass this many) */
     uint16  Algorithm_X;                        /**< \brief Algorithm value X (out of this many) */
     uint16  Algorithm_O;                        /**< \brief Algorithm value O (at this offset) */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
 } DS_FilterParmsCmd_t;
 
@@ -194,7 +165,8 @@ typedef struct
 {
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
-	uint32  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
     char    Pathname[DS_PATHNAME_BUFSIZE];      /**< \brief Path portion of filename */
 
@@ -210,7 +182,8 @@ typedef struct
 {
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
-	uint32  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
     char    Basename[DS_BASENAME_BUFSIZE];      /**< \brief Base portion of filename */
 
@@ -226,7 +199,8 @@ typedef struct
 {
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
-	uint32  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
     char    Extension[DS_EXTENSION_BUFSIZE];    /**< \brief Extension portion of filename */
 
@@ -242,7 +216,8 @@ typedef struct
 {
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
-	uint32  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
     uint32  MaxFileSize;                        /**< \brief Max file size (bytes) before re-open */
 
@@ -258,7 +233,8 @@ typedef struct
 {
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
-	uint32  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
     uint32  MaxFileAge;                         /**< \brief Max file age (seconds) */
 
@@ -274,7 +250,8 @@ typedef struct
 {
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
-	uint32  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
     uint32  SequenceCount;                      /**< \brief Sequence count portion of filename */
 
@@ -290,7 +267,8 @@ typedef struct
 {
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
-	uint32  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  FileTableIndex;                     /**< \brief Index into Destination File Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
 } DS_CloseFileCmd_t;
 
@@ -329,6 +307,7 @@ typedef struct
     uint8   CmdHeader[CFE_SB_CMD_HDR_SIZE];     /**< \brief cFE Software Bus command message header */
 
     uint16  MessageID;                          /**< \brief Message ID to add to Packet Filter Table */
+    uint16  Padding;                            /**< \brief Structure Padding on 32-bit boundaries */
 
 } DS_AddMidCmd_t;
 

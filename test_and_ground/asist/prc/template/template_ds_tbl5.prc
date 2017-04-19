@@ -15,9 +15,12 @@ PROC $sc_$cpu_ds_tbl5
 ;	None.
 ;
 ;  Change History
-;
 ;	Date		   Name		Description
 ;	09/14/11	Walt Moleski	Inital implemetation.
+;       01/31/17        Walt Moleski    Updated for DS 2.5.0.0 using CPU1 for
+;                                       commanding and added a hostCPU variable
+;                                       for the utility procs to connect to the
+;                                       proper host IP address.
 ;
 ;  Arguments
 ;	None.
@@ -47,14 +50,7 @@ local filterAppid = 0x0F77
 local firstMID = 0x0900
 local DSAppName = "DS"   
 local filterTblName = DSAppName & "." & DS_FILTER_TBL_NAME
-
-if ("$CPU" = "CPU2") then
-  filterAppid = 0x0F85
-  FirstMID = 0x0A00
-elseif ("$CPU" = "CPU3") then
-  filterAppid = 0x0F96
-  FirstMID = 0x0800
-endif
+local hostCPU = "$CPU"
 
 ;; Setup the Packet Filter Table
 $SC_$CPU_DS_PF_TBL_Description  = "Full Table Add MID Test"
@@ -84,7 +80,7 @@ local maxEntry = DS_PACKETS_IN_FILTER_TABLE - 1
 local maxFilterParams = DS_FILTERS_PER_PACKET - 1
 local endmnemonic = "$SC_$CPU_DS_PF_TBL[" & maxEntry & "].FilterParams[" & maxFilterParams & "].O_Value"
 
-s create_tbl_file_from_cvt("$CPU",filterAppid,"Full Filter Table Test","ds_fullfilter.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
+s create_tbl_file_from_cvt(hostCPU,filterAppid,"Full Filter Table Test","ds_fullfilter.tbl",filterTblName,"$SC_$CPU_DS_PF_TBL_Description",endmnemonic)
 
 %liv (log_procedure) = logging
 

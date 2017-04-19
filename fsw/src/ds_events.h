@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: ds_events.h 1.17.1.1 2015/02/28 17:13:50EST sstrege Exp  $
+**   $Id: ds_events.h 1.3 2017/01/25 12:05:35EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -15,45 +15,6 @@
 **  The CFS Data Storage (DS) Application event id header file
 **
 ** Notes:
-**
-** $Log: ds_events.h  $
-** Revision 1.17.1.1 2015/02/28 17:13:50EST sstrege 
-** Added copyright information
-** Revision 1.17 2014/11/14 14:12:25EST lwalling 
-** Modified Doxygen description for DS_GET_FILE_INFO_CMD_EID
-** Revision 1.16 2012/07/17 15:28:30EDT lwalling 
-** Verify HK request command length
-** Revision 1.15 2011/07/12 14:44:04PDT lwalling 
-** Add event definitions for DS_CLOSE_ALL_CMD_EID and DS_CLOSE_ALL_CMD_ERR_EID
-** Revision 1.14 2011/05/19 11:36:06EDT lwalling 
-** Add event definitions for DS_ADD_MID_CMD_ERR_EID and DS_ADD_MID_CMD_EID
-** Revision 1.13 2011/05/17 11:01:12EDT lwalling 
-** Add event definitions for Get File Info command handler
-** Revision 1.12 2010/11/09 14:59:08EST lwalling 
-** Add event error definitions for failed attempt to move files
-** Revision 1.11 2010/04/09 16:46:55EDT lwalling 
-** Add desc text verify result to status events, precede percent with backslash in doxygen comments
-** Revision 1.10 2010/03/03 14:20:22EST lwalling 
-** Change comment start characters to conform to Doxygen standards
-** Revision 1.9 2009/12/08 10:52:12EST lwalling 
-** Event text cleanup
-** Revision 1.8 2009/10/06 09:56:29EDT lwalling 
-** Delete obsolete table update event ID
-** Revision 1.7 2009/08/28 16:47:54EDT lwalling 
-** Add support for storing sequence counts in CDS
-** Revision 1.6 2009/08/27 16:32:31EDT lwalling 
-** Updates from source code review
-** Revision 1.5 2009/07/21 17:49:26EDT lwalling 
-** Add doxygen comments for event ID macro definitions
-** Revision 1.4 2009/05/26 14:21:06EDT lwalling 
-** Initial version of DS application
-** Revision 1.3 2009/04/18 09:44:21EDT dkobe 
-** Corrected HK_SEND_HK_CMD_MID to be HK_SEND_HK_MID
-** Revision 1.2 2008/12/02 14:46:09EST rmcgraw 
-** DCR4669:1 Abbreviated project name in history
-** Revision 1.1 2008/11/25 11:36:26EST rmcgraw 
-** Initial revision
-** Member added to CFS project
 **
 *************************************************************************/
 #ifndef _ds_events_h_

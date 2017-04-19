@@ -1,7 +1,7 @@
 /************************************************************************
-**   $Id: ds_table.c 1.19.1.3 2015/07/28 14:53:04EDT lwalling Exp  $
+**   $Id: ds_table.c 1.7 2017/01/25 12:05:38EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -12,52 +12,6 @@
 **
 **  CFS Data Storage (DS) table management functions
 **
-** $Log: ds_table.c  $
-** Revision 1.19.1.3 2015/07/28 14:53:04EDT lwalling 
-** Update restoring task enable/disable state comments
-** Revision 1.19.1.2 2015/07/28 14:36:46EDT lwalling 
-** Add definition for DS_CDS_ENABLE_STATE to allow storage of enable/disable state in CDS
-** Revision 1.19.1.1 2015/02/28 17:13:53EST sstrege 
-** Added copyright information
-** Revision 1.19 2011/05/31 15:00:42EDT lwalling 
-** Added calls to create hash table, created hash table functions, modified message ID lookup function
-** Revision 1.18 2011/01/04 12:53:29EST lwalling 
-** Fix test for unused filter table entry to use correct filter parm names
-** Revision 1.17 2010/11/12 11:35:38EST lwalling 
-** Changed data storage packet subcriptions to use CFE_SB_SubscribeEx()
-** Revision 1.16 2010/04/09 16:12:31EDT lwalling 
-** Add descriptor text verify result to status event
-** Revision 1.15 2010/04/09 15:12:27EDT lwalling 
-** Change all table verify status event type from DEBUG to INFO
-** Revision 1.14 2010/04/09 15:06:00EDT lwalling 
-** Change table verify status event type from DEBUG to INFO
-** Revision 1.13 2009/12/08 10:52:14EST lwalling 
-** Event text cleanup
-** Revision 1.12 2009/10/05 16:29:07EDT lwalling 
-** Fix typo in result of call to get table status
-** Revision 1.11 2009/10/05 16:16:49EDT lwalling 
-** Provide distinction for local changes to table data from new table loads
-** Revision 1.10 2009/10/05 13:33:52EDT lwalling 
-** Change basename string contents from required to optional
-** Revision 1.9 2009/10/05 10:16:39EDT lwalling 
-** Allow DS table load after initial table load fails
-** Revision 1.8 2009/08/31 17:51:38EDT lwalling 
-** Convert calls from DS_TableVerifyString() to CFS_VerifyString() with descriptive arg names
-** Revision 1.7 2009/08/31 16:47:48EDT lwalling 
-** Remove references to DS_1HZ_MID and process file age tests during housekeeping request
-** Revision 1.6 2009/08/28 16:47:57EDT lwalling 
-** Add support for storing sequence counts in CDS
-** Revision 1.5 2009/08/27 16:32:28EDT lwalling 
-** Updates from source code review
-** Revision 1.4 2009/08/07 16:22:39EDT lwalling 
-** Fix verify parms to allow 0,0,0 - Fix return type tests for entry unused and verify string
-** Revision 1.3 2009/07/20 13:57:05EDT lwalling 
-** Event text changes
-** Revision 1.2 2009/06/12 11:47:59EDT lwalling 
-** Moved function prototypes to header file, make local changes for file enable state and sequence counters.
-** Revision 1.1 2009/05/26 14:30:41EDT lwalling 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/src/project.pj
 *************************************************************************/
 
 #include "cfe.h"
@@ -141,7 +95,7 @@ int32 DS_TableInit(void)
         */ 
         CFE_EVS_SendEvent(DS_INIT_TBL_ERR_EID, CFE_EVS_ERROR,
                          "Unable to register Destination File Table: Error = 0x%08X",
-                          Result1);
+                          (unsigned int)Result1);
     }
 
     if (Result1 == CFE_SUCCESS)
@@ -178,7 +132,7 @@ int32 DS_TableInit(void)
             */ 
             CFE_EVS_SendEvent(DS_INIT_TBL_ERR_EID, CFE_EVS_ERROR,
                              "Unable to register Filter Table: Error = 0x%08X",
-                              Result1);
+                              (unsigned int)Result1);
         }
     }
 
@@ -198,7 +152,7 @@ int32 DS_TableInit(void)
             {
                 CFE_EVS_SendEvent(DS_INIT_TBL_ERR_EID, CFE_EVS_ERROR,
                    "Unable to load default Destination File Table: Filename = '%s', Error = 0x%08X",
-                                  DS_DEF_DEST_FILENAME, Result2);
+                                  DS_DEF_DEST_FILENAME, (unsigned int)Result2);
             }
         }
 
@@ -211,7 +165,7 @@ int32 DS_TableInit(void)
             {
                 CFE_EVS_SendEvent(DS_INIT_TBL_ERR_EID, CFE_EVS_ERROR,
                    "Unable to load default Filter Table: Filename = '%s', Error = 0x%08X",
-                                  DS_DEF_FILTER_FILENAME, Result2);
+                                  DS_DEF_FILTER_FILENAME, (unsigned int)Result2);
             }
         }
 
@@ -507,7 +461,7 @@ int32 DS_TableVerifyDestFile(void *TableData)
     */
     CFE_EVS_SendEvent(DS_FIL_TBL_EID, CFE_EVS_INFORMATION,
        "Destination file table verify results: desc text = %s, good entries = %d, bad = %d, unused = %d",
-                      DescResult, CountGood, CountBad, CountUnused);
+                      DescResult, (int)CountGood, (int)CountBad, (int)CountUnused);
 
     return(Result);
 
@@ -599,7 +553,7 @@ boolean DS_TableVerifyDestFileEntry(DS_DestFileEntry_t *DestFileEntry,
         {
             CFE_EVS_SendEvent(DS_FIL_TBL_ERR_EID, CFE_EVS_ERROR,
                              "%s index = %d, max file size = %d",
-                              CommonErrorText, TableIndex, DestFileEntry->MaxFileSize);
+                              CommonErrorText, (int)TableIndex, (int)DestFileEntry->MaxFileSize);
         }
         Result = FALSE;
     }
@@ -609,7 +563,7 @@ boolean DS_TableVerifyDestFileEntry(DS_DestFileEntry_t *DestFileEntry,
         {
             CFE_EVS_SendEvent(DS_FIL_TBL_ERR_EID, CFE_EVS_ERROR,
                              "%s index = %d, max file age = %d",
-                              CommonErrorText, TableIndex, DestFileEntry->MaxFileAge);
+                              CommonErrorText, (int)TableIndex, (int)DestFileEntry->MaxFileAge);
         }
         Result = FALSE;
     }
@@ -619,7 +573,7 @@ boolean DS_TableVerifyDestFileEntry(DS_DestFileEntry_t *DestFileEntry,
         {
             CFE_EVS_SendEvent(DS_FIL_TBL_ERR_EID, CFE_EVS_ERROR,
                              "%s index = %d, sequence count = %d",
-                              CommonErrorText, TableIndex, DestFileEntry->SequenceCount);
+                              CommonErrorText, (int)TableIndex, (int)DestFileEntry->SequenceCount);
         }
         Result = FALSE;
     }
@@ -688,7 +642,7 @@ int32 DS_TableVerifyFilter(void *TableData)
     */
     CFE_EVS_SendEvent(DS_FLT_TBL_EID, CFE_EVS_INFORMATION,
        "Filter table verify results: desc text = %s, good entries = %d, bad = %d, unused = %d",
-                      DescResult, CountGood, CountBad, CountUnused);
+                      DescResult, (int)CountGood, (int)CountBad, (int)CountUnused);
 
     return(Result);
 
@@ -739,7 +693,7 @@ boolean DS_TableVerifyFilterEntry(DS_PacketEntry_t *PacketEntry,
                     CFE_EVS_SendEvent(DS_FLT_TBL_ERR_EID, CFE_EVS_ERROR,
                                      "%s MID = 0x%04X, index = %d, filter = %d, file table index = %d",
                                       CommonErrorText, PacketEntry->MessageID,
-                                      TableIndex, i, FilterParms->FileTableIndex);
+                                      (int)TableIndex, (int)i, FilterParms->FileTableIndex);
                 }
                 Result = FALSE;
             }
@@ -750,7 +704,7 @@ boolean DS_TableVerifyFilterEntry(DS_PacketEntry_t *PacketEntry,
                     CFE_EVS_SendEvent(DS_FLT_TBL_ERR_EID, CFE_EVS_ERROR,
                                      "%s MID = 0x%04X, index = %d, filter = %d, filter type = %d",
                                       CommonErrorText, PacketEntry->MessageID,
-                                      TableIndex, i, FilterParms->FilterType);
+                                      (int)TableIndex, (int)i, FilterParms->FilterType);
                 }
                 Result = FALSE;
             }
@@ -762,7 +716,7 @@ boolean DS_TableVerifyFilterEntry(DS_PacketEntry_t *PacketEntry,
                 {
                     CFE_EVS_SendEvent(DS_FLT_TBL_ERR_EID, CFE_EVS_ERROR,
                                      "%s MID = 0x%04X, index = %d, filter = %d, filter parms N = %d, X = %d, O = %d",
-                                      CommonErrorText, PacketEntry->MessageID, TableIndex, i,
+                                      CommonErrorText, PacketEntry->MessageID, (int)TableIndex, (int)i,
                                       FilterParms->Algorithm_N,
                                       FilterParms->Algorithm_X,
                                       FilterParms->Algorithm_O);
@@ -1096,7 +1050,7 @@ int32 DS_TableCreateCDS(void)
         DS_AppData.DataStoreHandle = 0;
 
         CFE_EVS_SendEvent(DS_INIT_CDS_ERR_EID, CFE_EVS_ERROR,
-                         "Critical Data Store access error = 0x%08X", Result);
+                         "Critical Data Store access error = 0x%08X", (unsigned int)Result);
         /*
         ** CDS errors are not fatal - DS can still run...
         */
@@ -1148,7 +1102,7 @@ void DS_TableUpdateCDS(void)
         if (Result != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(DS_INIT_CDS_ERR_EID, CFE_EVS_ERROR,
-                             "Critical Data Store access error = 0x%08X", Result);
+                             "Critical Data Store access error = 0x%08X", (unsigned int)Result);
             /*
             ** CDS is broken - prevent further errors...
             */
@@ -1214,9 +1168,6 @@ uint32 DS_TableHashFunction(CFE_SB_MsgId_t MessageID)
 void DS_TableCreateHash(void)
 {
     int32 FilterIndex;
-    int32 HashIndex;
-    DS_HashLink_t *NewLink;
-    DS_HashLink_t *LinkList;
 
     /*
     ** Initialize global hash table structures...
@@ -1226,41 +1177,58 @@ void DS_TableCreateHash(void)
 
     for (FilterIndex = 0; FilterIndex < DS_PACKETS_IN_FILTER_TABLE; FilterIndex++)
     {
-        /* Get unused linked list entry (one link entry per filter table entry) */
-        NewLink = &DS_AppData.HashLinks[FilterIndex];
-
-        /* Set filter table data values for new linked list entry */
-        NewLink->Index = FilterIndex;
-        NewLink->MessageID = DS_AppData.FilterTblPtr->Packet[FilterIndex].MessageID;
-
-        /* Hash table function converts MID into hash table index */
-        HashIndex = DS_TableHashFunction(NewLink->MessageID);
-
-        if (DS_AppData.HashTable[HashIndex] == (DS_HashLink_t *) NULL)
-        {
-            /* Set first link in this hash table entry linked list */
-            DS_AppData.HashTable[HashIndex] = NewLink;
-        }
-        else
-        {
-            /* Get start of linked list (all MID's with same hash result) */
-            LinkList = DS_AppData.HashTable[HashIndex];
-
-            /* Find last link */
-            while (LinkList->Next != (DS_HashLink_t *) NULL)
-            {
-                LinkList = LinkList->Next;
-            }
-
-            /* Add new link */
-            LinkList->Next = NewLink;
-        }
+        DS_TableAddMsgID(DS_AppData.FilterTblPtr->Packet[FilterIndex].MessageID, FilterIndex);
     }
 
     return;
 
 } /* End of DS_TableCreateHash() */
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                 */
+/* DS_TableFindMsgID() - get filter table index for MID            */
+/*                                                                 */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+int32 DS_TableAddMsgID(CFE_SB_MsgId_t MessageID, int32 FilterIndex)
+{
+    int32 HashIndex;
+    DS_HashLink_t *NewLink;
+    DS_HashLink_t *LinkList;
+
+    /* Get unused linked list entry (one link entry per filter table entry) */
+    NewLink = &DS_AppData.HashLinks[FilterIndex];
+
+    /* Set filter table data values for new linked list entry */
+    NewLink->Index = FilterIndex;
+    NewLink->MessageID = MessageID;
+
+    /* Hash table function converts MID into hash table index */
+    HashIndex = DS_TableHashFunction(NewLink->MessageID);
+
+    if (DS_AppData.HashTable[HashIndex] == (DS_HashLink_t *) NULL)
+    {
+        /* Set first link in this hash table entry linked list */
+        DS_AppData.HashTable[HashIndex] = NewLink;
+    }
+    else
+    {
+        /* Get start of linked list (all MID's with same hash result) */
+        LinkList = DS_AppData.HashTable[HashIndex];
+
+        /* Find last link */
+        while (LinkList->Next != (DS_HashLink_t *) NULL)
+        {
+            LinkList = LinkList->Next;
+        }
+
+        /* Add new link */
+        LinkList->Next = NewLink;
+    }
+
+    return(HashIndex);
+
+} /* End of DS_TableAddMsgID() */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */

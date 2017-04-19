@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: ds_app.c 1.17.1.1 2015/02/28 17:13:40EST sstrege Exp  $
+**   $Id: ds_app.c 1.4 2017/01/25 12:05:28EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -16,45 +16,6 @@
 **  initialization routines, the main routine and the command interface.
 **
 ** Notes:
-**
-** $Log: ds_app.c  $
-** Revision 1.17.1.1 2015/02/28 17:13:40EST sstrege 
-** Added copyright information
-** Revision 1.17 2014/11/14 16:26:23EST lwalling 
-** Increment ignored pkt counter for DS commands only when they are in the filter table
-** Revision 1.16 2014/06/27 14:21:03EDT sjudy 
-** Added DS filter table file name to the DS hkp packet.
-** Revision 1.15 2012/07/17 15:28:18EDT lwalling 
-** Verify HK request command length
-** Revision 1.14 2011/07/12 14:39:48PDT lwalling 
-** Add call to DS_CmdCloseAll() from DS_AppProcessCmd()
-** Revision 1.13 2011/05/19 11:31:47EDT lwalling 
-** Add call to new command handler - DS_CmdAddMID
-** Revision 1.12 2011/05/06 14:55:45EDT lwalling 
-** Call get file info cmd handler, remove file info from hk packet, store file growth rate during hk
-** Revision 1.11 2009/12/07 15:20:25EST lwalling 
-** Report file sequence counts in housekeeping telemetry
-** Revision 1.10 2009/08/31 16:47:47EDT lwalling 
-** Remove references to DS_1HZ_MID and process file age tests during housekeeping request
-** Revision 1.9 2009/08/28 16:47:56EDT lwalling 
-** Add support for storing sequence counts in CDS
-** Revision 1.8 2009/08/27 16:32:35EDT lwalling 
-** Updates from source code review
-** Revision 1.7 2009/06/12 11:55:39EDT lwalling 
-** Moved function prototypes to header file, moved file age test function to file specific source module.
-** Revision 1.6 2009/05/27 16:34:25EDT lwalling 
-** Doxygen updates for ds_app.c and ds_app.h
-** Revision 1.5 2009/05/26 14:21:05EDT lwalling 
-** Initial version of DS application
-** Revision 1.4 2008/12/17 15:34:18EST rmcgraw 
-** DCR4669:2 Added utility files
-** Revision 1.3 2008/12/02 14:39:18EST rmcgraw 
-** DCR4669:1 Changed size param in tbl reg call for filter table
-** Revision 1.2 2008/11/25 15:34:53EST rmcgraw 
-** DCR4669:1 Fixed unresolved symbols
-** Revision 1.1 2008/11/25 11:36:24EST rmcgraw 
-** Initial revision - pre code review, first compiled version
-** Member added to CFS project
 **
 *************************************************************************/
 
@@ -181,12 +142,12 @@ void DS_AppMain(void)
         ** Send an event describing the reason for the termination...
         */
         CFE_EVS_SendEvent(DS_EXIT_ERR_EID, CFE_EVS_CRITICAL,
-                         "Application terminating, err = 0x%08X", Result);
+                         "Application terminating, err = 0x%08X", (unsigned int)Result);
 
         /*
         ** In case cFE Event Services is not working...
         */
-        CFE_ES_WriteToSysLog("DS application terminating, err = 0x%08X\n", Result);
+        CFE_ES_WriteToSysLog("DS application terminating, err = 0x%08X\n", (unsigned int)Result);
     }
 
     /*
@@ -238,7 +199,7 @@ int32 DS_AppInitialize(void)
         if (Result != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(DS_INIT_ERR_EID, CFE_EVS_ERROR,
-               "Unable to register for EVS services, err = 0x%08X", Result);
+               "Unable to register for EVS services, err = 0x%08X", (unsigned int)Result);
         }
     }
 
@@ -252,7 +213,7 @@ int32 DS_AppInitialize(void)
         if (Result != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(DS_INIT_ERR_EID, CFE_EVS_ERROR,
-               "Unable to create input pipe, err = 0x%08X", Result);
+               "Unable to create input pipe, err = 0x%08X", (unsigned int)Result);
         }
     }
 
@@ -266,7 +227,7 @@ int32 DS_AppInitialize(void)
         if (Result != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(DS_INIT_ERR_EID, CFE_EVS_ERROR,
-               "Unable to subscribe to HK request, err = 0x%08X", Result);
+               "Unable to subscribe to HK request, err = 0x%08X", (unsigned int)Result);
         }
     }
 
@@ -280,7 +241,7 @@ int32 DS_AppInitialize(void)
         if (Result != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(DS_INIT_ERR_EID, CFE_EVS_ERROR,
-               "Unable to subscribe to DS commands, err = 0x%08X", Result);
+               "Unable to subscribe to DS commands, err = 0x%08X", (unsigned int)Result);
         }
     }
 
@@ -308,7 +269,7 @@ int32 DS_AppInitialize(void)
         CFE_EVS_SendEvent(DS_INIT_EID, CFE_EVS_INFORMATION,
                          "Application initialized, version %d.%d.%d.%d, data at 0x%08X",
                           DS_MAJOR_VERSION, DS_MINOR_VERSION,
-                          DS_REVISION, DS_MISSION_REV, (uint32) &DS_AppData);
+                          DS_REVISION, DS_MISSION_REV, (unsigned int) &DS_AppData);
     }
 
     return(Result);

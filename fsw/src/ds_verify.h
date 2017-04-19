@@ -1,8 +1,8 @@
 /************************************************************************
 ** File:
-**   $Id: ds_verify.h 1.10.1.2 2015/07/28 14:02:33EDT lwalling Exp  $
+**   $Id: ds_verify.h 1.4 2017/01/25 12:05:50EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -15,33 +15,6 @@
 **  Define the CFS Data Storage (DS) Application compile-time checks
 **
 ** Notes:
-**
-** $Log: ds_verify.h  $
-** Revision 1.10.1.2 2015/07/28 14:02:33EDT lwalling 
-** Add verification for definition of DS_CDS_ENABLE_STATE
-** Revision 1.10.1.1 2015/02/28 17:14:04EST sstrege 
-** Added copyright information
-** Revision 1.10 2010/11/12 11:34:21EST lwalling 
-** Added platform config verification for DS_PER_PACKET_PIPE_LIMIT
-** Revision 1.9 2010/11/08 14:22:21EST lwalling 
-** Add verification tests for DS_MOVE_FILES
-** Revision 1.8 2010/10/28 11:21:48EDT lwalling 
-** Add config definition tests for DS_FILE_HEADER_TYPE
-** Revision 1.7 2010/10/26 16:44:21EDT lwalling 
-** Move DS_MISSION_REV from local header to platform config file
-** Revision 1.6 2010/10/26 16:18:22EDT lwalling 
-** Move DS_DEF_ENABLE_STATE from local header to platform config file
-** Revision 1.5 2009/08/27 16:32:34EDT lwalling 
-** Updates from source code review
-** Revision 1.4 2009/07/20 13:55:02EDT lwalling 
-** Add config verification to ensure that all items have been defined
-** Revision 1.3 2009/07/15 10:13:00EDT lwalling 
-** Updated configuration verification header file
-** Revision 1.2 2008/12/02 14:46:10EST rmcgraw 
-** DCR4669:1 Abbreviated project name in history
-** Revision 1.1 2008/11/25 11:36:29EST rmcgraw 
-** Initial revision
-** Member added to CFS project
 **
 *************************************************************************/
 #ifndef _ds_verify_h_
@@ -196,9 +169,16 @@
     #error DS_APP_PIPE_DEPTH must be defined!
 #elif (DS_APP_PIPE_DEPTH  <  1)
     #error DS_APP_PIPE_DEPTH cannot be less than 1!
-#elif (DS_APP_PIPE_DEPTH  >  CFE_SB_MAX_PIPE_DEPTH)
-    #error DS_APP_PIPE_DEPTH cannot be greater than CFE_SB_MAX_PIPE_DEPTH!
 #endif
+
+/*
+ * JPH 2015-06-29 - Removed check of:
+ *  DS_APP_PIPE_DEPTH  >  CFE_SB_MAX_PIPE_DEPTH
+ *
+ * This is not a valid check anymore, as the DS app does not have knowledge
+ * of CFE_SB_MAX_PIPE_DEPTH.  But if the configuration violates this rule it will
+ * show up as an obvious run-time error so the compile-time check is redundant.
+ */
 
 
 #ifndef DS_MAKE_TABLES_CRITICAL

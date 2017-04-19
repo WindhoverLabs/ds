@@ -1,7 +1,7 @@
 /************************************************************************
-**   $Id: ds_file.c 1.12.1.1 2015/02/28 17:14:00EST sstrege Exp  $
+**   $Id: ds_file.c 1.6 2017/01/25 12:05:45EST sstrege Exp  $
 **
-**  Copyright © 2007-2014 United States Government as represented by the 
+**  Copyright (c) 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
 **  All Other Rights Reserved.  
 **
@@ -12,34 +12,6 @@
 **
 **  CFS Data Storage (DS) file functions
 **
-** $Log: ds_file.c  $
-** Revision 1.12.1.1 2015/02/28 17:14:00EST sstrege 
-** Added copyright information
-** Revision 1.12 2012/05/31 14:58:11EDT lwalling 
-** Change age limit test from greater than to greater than or equal to max file age
-** Revision 1.11 2011/01/04 12:00:03PST lwalling 
-** Fix errors and warnings when DS_FILE_HEADER_TYPE = DS_FILE_HEADER_GPM
-** Revision 1.10 2010/11/10 15:58:29EST lwalling 
-** Use GPM packet time to create filename and for file header start/stop times
-** Revision 1.9 2010/11/09 15:00:33EST lwalling 
-** Added conditional code to move files after closing them
-** Revision 1.8 2010/11/08 10:28:52EST lwalling 
-** Add utility func DS_FileConvertGPM, create cFE vs GPM support in file header functions
-** Revision 1.7 2009/12/08 10:52:13EST lwalling 
-** Event text cleanup
-** Revision 1.6 2009/08/31 16:47:47EDT lwalling 
-** Remove references to DS_1HZ_MID and process file age tests during housekeeping request
-** Revision 1.5 2009/08/28 16:47:56EDT lwalling 
-** Add support for storing sequence counts in CDS
-** Revision 1.4 2009/08/27 16:32:34EDT lwalling 
-** Updates from source code review
-** Revision 1.3 2009/08/13 09:42:48EDT lwalling 
-** Call to CFE_FS_WriteHeader() returns bytes written, fixed arg order in call to OS_lseek()
-** Revision 1.2 2009/06/12 11:52:18EDT lwalling 
-** Moved function prototypes to header file, modify local vars for file enable state and sequence counters.
-** Revision 1.1 2009/05/26 14:30:40EDT lwalling 
-** Initial revision
-** Member added to project c:/MKSDATA/MKS-REPOSITORY/CFS-REPOSITORY/ds/fsw/src/project.pj
 *************************************************************************/
 
 #include "cfe.h"
@@ -59,13 +31,6 @@
 #include "ds_events.h"
 
 #include "string.h"
-
-/*
-** Prototype for utility function specific to GPM type file headers
-*/
-#if (DS_FILE_HEADER_TYPE == DS_FILE_HEADER_GPM)
-void DS_FileConvertGPM(char *Buffer, uint32 Value);
-#endif
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -431,7 +396,7 @@ void DS_FileWriteError(uint32 FileIndex, uint32 DataLength, int32 WriteResult)
 
     CFE_EVS_SendEvent(DS_WRITE_FILE_ERR_EID, CFE_EVS_ERROR,
                      "FILE WRITE error: result = %d, length = %d, dest = %d, name = '%s'",
-                      WriteResult, DataLength, FileIndex, FileStatus->FileName);
+                      (int)WriteResult, (int)DataLength, (int)FileIndex, FileStatus->FileName);
 
     DS_FileCloseDest(FileIndex);
 
@@ -474,7 +439,7 @@ void DS_FileCreateDest(uint32 FileIndex)
 
             CFE_EVS_SendEvent(DS_CREATE_FILE_ERR_EID, CFE_EVS_ERROR,
                              "FILE CREATE error: result = %d, dest = %d, name = '%s'",
-                              Result, FileIndex, FileStatus->FileName);
+                              (int)Result, (int)FileIndex, FileStatus->FileName);
 
             CFE_PSP_MemSet(FileStatus->FileName, 0, DS_TOTAL_FNAME_BUFSIZE);
 
@@ -506,7 +471,7 @@ void DS_FileCreateDest(uint32 FileIndex)
                 FileStatus->FileCount++;
                 if (FileStatus->FileCount > DS_MAX_SEQUENCE_COUNT)
                 {
-                    FileStatus->FileCount = 0;
+                    FileStatus->FileCount = DestFile->SequenceCount;
                 }
 
                 /*
@@ -619,7 +584,7 @@ void DS_FileCreateName(uint32 FileIndex)
         */
         CFE_EVS_SendEvent(DS_FILE_NAME_ERR_EID, CFE_EVS_ERROR,
            "FILE NAME error: dest = %d, path = '%s', base = '%s', seq = '%s', ext = '%s'",
-                          FileIndex, DestFile->Pathname, DestFile->Basename,
+                          (int)FileIndex, DestFile->Pathname, DestFile->Basename,
                           Sequence, DestFile->Extension);
 
         /*
