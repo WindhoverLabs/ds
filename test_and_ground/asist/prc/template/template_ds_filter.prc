@@ -19,9 +19,10 @@ PROC $sc_$cpu_ds_filter
 ;   cDS1005	If DS rejects any command, DS shall abort the command execution,
 ;		increment the DS Command Rejected Counter and issue an event
 ;		message.
-;   cDS2000	Upon receipt of a message, DS shall determine if the message
-;		shall be stored based on the contents of the Packet Filter
-;		table and the Destination File table.
+;   cDS2000	Upon receipt of a message, if the Packet Processing State is
+;		ENABLED, DS shall determine if the message shall be stored based
+;		on the contents of the Packet Filter table and the Destination
+;		File table.
 ;   cDS2000.1	The Packet Filter Table contents shall include:
 ;			a. Message ID
 ;			b. Destination file table index
@@ -546,7 +547,7 @@ local expPassedPkts = $SC_$CPU_DS_PassedPktCnt + 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=1 Pattern=x'5A'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -658,7 +659,7 @@ expPassedPkts = $SC_$CPU_DS_PassedPktCnt + 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=timeMsgID MsgType=1 Pattern=x'BB'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -737,7 +738,7 @@ for i = 0 to DS_FILTERS_PER_PACKET-1 do
   /$SC_$CPU_DS_CloseFile FileIndex=seqFileIDs[i]
   /$SC_$CPU_DS_CloseFile FileIndex=timeFileIDs[i]
 
-  ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+  ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
   if (UT_TW_Status = UT_Success) then
     write "<*> Passed (1004;5002) - DS Close File commands sent properly."
     ut_setrequirements DS_1004, "P"
@@ -749,7 +750,7 @@ for i = 0 to DS_FILTERS_PER_PACKET-1 do
   endif
 
   ;; Check for the event message
-  ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 2
+  ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 2
   if (UT_TW_Status = UT_Success) then
     write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
     ut_setrequirements DS_1004, "P"
@@ -926,7 +927,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close commands
 /$SC_$CPU_DS_CloseFile FileIndex=fileTblEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -938,7 +939,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -981,7 +982,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Filter Params Command
 /$SC_$CPU_DS_SetFilterParams MessageID=oneMsgID ParamIndex=0 N_Value=msgsStored X_Value=msgsToSend O_Value=storageOffset
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - DS Set Filter Parameters command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -993,7 +994,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - Expected Event Msg ",DS_PARMS_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1108,7 +1109,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close commands
 /$SC_$CPU_DS_CloseFile FileIndex=fileTblEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1120,7 +1121,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1197,7 +1198,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Fiter Params Command
 /$SC_$CPU_DS_SetFilterParams MessageID=oneMsgID ParamIndex=0 N_Value=0 X_Value=msgsToSend O_Value=storageOffset
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - DS Set Filter Parameters command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1209,7 +1210,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - Expected Event Msg ",DS_PARMS_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1235,7 +1236,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Fiter Params Command
 /$SC_$CPU_DS_SetFilterParams MessageID=xMsgID ParamIndex=0 N_Value=0 X_Value=0 O_Value=oValue
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - DS Set Filter Parameters command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1247,7 +1248,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - Expected Event Msg ",DS_PARMS_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1391,7 +1392,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Filter File Command
 /$SC_$CPU_DS_SetFilterFile MessageID=timeFileMsgID ParamIndex=0 FileIndex=timeFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5008) - DS Set Filter File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1403,7 +1404,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5008) - Expected Event Msg ",DS_FILE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1447,7 +1448,7 @@ expPassedPkts = $SC_$CPU_DS_PassedPktCnt + 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=timeFileMsgID MsgType=1 Pattern=x'FF'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -1499,7 +1500,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close commands
 /$SC_$CPU_DS_CloseFile FileIndex=timeFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1511,7 +1512,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1598,7 +1599,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Filter File Command
 /$SC_$CPU_DS_SetFilterFile MessageID=seqFileMsgID ParamIndex=0 FileIndex=seqFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5008) - DS Set Filter File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1610,7 +1611,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5008) - Expected Event Msg ",DS_FILE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1654,7 +1655,7 @@ expPassedPkts = $SC_$CPU_DS_PassedPktCnt + 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqFileMsgID MsgType=1 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -1706,7 +1707,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close command
 /$SC_$CPU_DS_CloseFile FileIndex=seqFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1718,7 +1719,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1777,7 +1778,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Filter File Command
 /$SC_$CPU_DS_SetFilterFile MessageID=seqFileMsgID ParamIndex=0 FileIndex=newFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5008) - DS Set Filter File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1789,7 +1790,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5008) - Expected Event Msg ",DS_FILE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1833,7 +1834,7 @@ expPassedPkts = $SC_$CPU_DS_PassedPktCnt + 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqFileMsgID MsgType=1 Pattern=x'AA'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -1877,7 +1878,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close commands
 /$SC_$CPU_DS_CloseFile FileIndex=newFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1889,7 +1890,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1971,7 +1972,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter File Command
 /$SC_$CPU_DS_SetFilterFile MessageID=x'F345' ParamIndex=0 FileIndex=newFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter File command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -1981,7 +1982,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_FILE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2003,7 +2004,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter File Command
 /$SC_$CPU_DS_SetFilterFile MessageID=seqFileMsgID ParamIndex=DS_FILTERS_PER_PACKET FileIndex=newFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter File command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2013,7 +2014,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_FILE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2035,7 +2036,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter File Command
 /$SC_$CPU_DS_SetFilterFile MessageID=seqFileMsgID ParamIndex=0 FileIndex=DS_DEST_FILE_CNT
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter File command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2045,7 +2046,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_FILE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2078,7 +2079,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterType MessageID=seqFileMsgID, ParamIndex=0, FilterType=newFilterType 
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5009) - DS Set Filter Type command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2090,7 +2091,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5009) - Expected Event Msg ",DS_FTYPE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2134,7 +2135,7 @@ expPassedPkts = $SC_$CPU_DS_PassedPktCnt + 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqFileMsgID MsgType=1 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -2178,7 +2179,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close commands
 /$SC_$CPU_DS_CloseFile FileIndex=newFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2190,7 +2191,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2272,7 +2273,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterType MessageID=x'1345' ParamIndex=0 FilterType=DS_BY_COUNT
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter Type command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2282,7 +2283,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_FTYPE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2304,7 +2305,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterType MessageID=seqFileMsgID ParamIndex=DS_FILTERS_PER_PACKET FilterType=DS_BY_COUNT
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter Type command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2314,7 +2315,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_FTYPE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2336,7 +2337,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterType MessageID=seqFileMsgID ParamIndex=0 FilterType=3
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter Type command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2346,7 +2347,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_FTYPE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2375,7 +2376,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Set Filter Parameters Command
 /$SC_$CPU_DS_SetFilterParams MessageID=seqFileMsgID ParamIndex=0 N_Value=newNVal X_Value=newXVal O_Value=newOVal
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - DS Set Filter Parameters command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2387,7 +2388,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5010) - Expected Event Msg ",DS_PARMS_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2437,7 +2438,7 @@ if (existingFilterType = DS_BY_TIME) then
   ;; Send the Set Filter Type Command
   /$SC_$CPU_DS_SetFilterType MessageID=seqFileMsgID, ParamIndex=0, FilterType=DS_BY_COUNT
 
-  ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+  ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
   if (UT_TW_Status = UT_Success) then
     write "<*> Passed (1004;5009) - DS Set Filter Type command sent properly."
     ut_setrequirements DS_1004, "P"
@@ -2449,7 +2450,7 @@ if (existingFilterType = DS_BY_TIME) then
   endif
 
   ;; Check for the event message
-  ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+  ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
   if (UT_TW_Status = UT_Success) then
     write "<*> Passed (1004;5009) - Expected Event Msg ",DS_FTYPE_CMD_EID," rcv'd."
     ut_setrequirements DS_1004, "P"
@@ -2532,7 +2533,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close commands
 /$SC_$CPU_DS_CloseFile FileIndex=newFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2544,7 +2545,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2628,7 +2629,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterParams MessageID=x'ABCD' ParamIndex=0 N_Value=newNVal X_Value=newXVal O_Value=newOVal
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter Parameters command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2638,7 +2639,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_PARMS_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2660,7 +2661,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterParams MessageID=x'ABCD' ParamIndex=DS_FILTERS_PER_PACKET  N_Value=newNVal X_Value=newXVal O_Value=newOVal
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter File command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2670,7 +2671,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_PARMS_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2692,7 +2693,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterParams MessageID=seqFileMsgID ParamIndex=0  N_Value=5 X_Value=3 O_Value=0
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter File command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2702,7 +2703,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_PARMS_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2724,7 +2725,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Set Filter Type Command
 /$SC_$CPU_DS_SetFilterParams MessageID=seqFileMsgID ParamIndex=0  N_Value=1 X_Value=3 O_Value=4
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Filter File command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -2734,7 +2735,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_PARMS_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -2763,7 +2764,7 @@ if (existingFilterType = DS_BY_COUNT) then
   ;; Send the Set Filter Type Command
   /$SC_$CPU_DS_SetFilterType MessageID=seqFileMsgID, ParamIndex=0, FilterType=DS_BY_TIME
 
-  ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+  ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
   if (UT_TW_Status = UT_Success) then
     write "<*> Passed (1004;5009) - DS Set Filter Type command sent properly."
     ut_setrequirements DS_1004, "P"
@@ -2775,7 +2776,7 @@ if (existingFilterType = DS_BY_COUNT) then
   endif
 
   ;; Check for the event message
-  ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+  ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
   if (UT_TW_Status = UT_Success) then
     write "<*> Passed (1004;5009) - Expected Event Msg ",DS_FTYPE_CMD_EID," rcv'd."
     ut_setrequirements DS_1004, "P"
@@ -2863,7 +2864,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close commands
 /$SC_$CPU_DS_CloseFile FileIndex=newFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2875,7 +2876,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2929,7 +2930,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004) - Expected Event Msg ",DS_ADD_MID_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"

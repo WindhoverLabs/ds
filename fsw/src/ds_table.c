@@ -1,5 +1,5 @@
 /************************************************************************
-**   $Id: ds_table.c 1.19.1.1 2015/02/28 17:13:53EST sstrege Exp  $
+**   $Id: ds_table.c 1.19.1.3 2015/07/28 14:53:04EDT lwalling Exp  $
 **
 **  Copyright © 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
@@ -13,6 +13,10 @@
 **  CFS Data Storage (DS) table management functions
 **
 ** $Log: ds_table.c  $
+** Revision 1.19.1.3 2015/07/28 14:53:04EDT lwalling 
+** Update restoring task enable/disable state comments
+** Revision 1.19.1.2 2015/07/28 14:36:46EDT lwalling 
+** Add definition for DS_CDS_ENABLE_STATE to allow storage of enable/disable state in CDS
 ** Revision 1.19.1.1 2015/02/28 17:13:53EST sstrege 
 ** Added copyright information
 ** Revision 1.19 2011/05/31 15:00:42EDT lwalling 
@@ -1038,7 +1042,8 @@ void DS_TableUnsubscribe(void)
 
 int32 DS_TableCreateCDS(void)
 {
-    uint32 DataStoreBuffer[DS_DEST_FILE_CNT];
+    /* Store file sequence counts and task ena/dis state in CDS */
+    uint32 DataStoreBuffer[DS_DEST_FILE_CNT + 1];
     int32 Result;
     int32 i;
 
@@ -1051,19 +1056,21 @@ int32 DS_TableCreateCDS(void)
     if (Result == CFE_SUCCESS)
     {
         /*
-        ** New CDS area - initialize the CDS data...
+        ** New CDS area - write to Critical Data Store...
         */
         for (i = 0; i < DS_DEST_FILE_CNT; i++)
         {
             DataStoreBuffer[i] = DS_AppData.FileStatus[i].FileCount;
         }
 
+        DataStoreBuffer[DS_DEST_FILE_CNT] = DS_AppData.AppEnableState;
+
         Result = CFE_ES_CopyToCDS(DS_AppData.DataStoreHandle, DataStoreBuffer);
     }
     else if (Result == CFE_ES_CDS_ALREADY_EXISTS)
     {
         /*
-        ** Pre-existing CDS area - update local status data...
+        ** Pre-existing CDS area - read from Critical Data Store...
         */
         Result = CFE_ES_RestoreFromCDS(DataStoreBuffer, DS_AppData.DataStoreHandle);
 
@@ -1073,6 +1080,11 @@ int32 DS_TableCreateCDS(void)
             {
                 DS_AppData.FileStatus[i].FileCount = DataStoreBuffer[i];
             }
+
+            #if (DS_CDS_ENABLE_STATE == 1)
+            /* Only restore enable/disable state if configured */
+            DS_AppData.AppEnableState = (uint8) DataStoreBuffer[DS_DEST_FILE_CNT];
+            #endif
         }
     }
 
@@ -1104,7 +1116,8 @@ int32 DS_TableCreateCDS(void)
 
 void DS_TableUpdateCDS(void)
 {
-    uint32 DataStoreBuffer[DS_DEST_FILE_CNT];
+    /* Store file sequence counts and task ena/dis state in CDS */
+    uint32 DataStoreBuffer[DS_DEST_FILE_CNT + 1];
     int32 Result;
     int32 i;
 
@@ -1114,7 +1127,7 @@ void DS_TableUpdateCDS(void)
     if (DS_AppData.DataStoreHandle != 0)
     {
         /*
-        ** Copy current sequence count values to simple data array...
+        ** Copy file sequence counts values to the data array...
         */
         for (i = 0; i < DS_DEST_FILE_CNT; i++)
         {
@@ -1122,7 +1135,13 @@ void DS_TableUpdateCDS(void)
         }
 
         /*
-        ** Update CDS with current sequence count values...
+        ** Always save the DS enable/disable state in the CDS...
+        **  (DS_CDS_ENABLE_STATE controls restoring the state)
+        */
+        DataStoreBuffer[DS_DEST_FILE_CNT] = DS_AppData.AppEnableState;
+
+        /*
+        ** Update DS portion of Critical Data Store...
         */
         Result = CFE_ES_CopyToCDS(DS_AppData.DataStoreHandle, DataStoreBuffer);
 

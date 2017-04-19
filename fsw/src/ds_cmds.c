@@ -1,5 +1,5 @@
 /************************************************************************
-**   $Id: ds_cmds.c 1.16.1.1 2015/02/28 17:13:44EST sstrege Exp  $
+**   $Id: ds_cmds.c 1.16.1.2 2015/07/28 13:57:29EDT lwalling Exp  $
 **
 **  Copyright © 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
@@ -13,6 +13,8 @@
 **  CFS Data Storage (DS) command handler functions
 **
 ** $Log: ds_cmds.c  $
+** Revision 1.16.1.2 2015/07/28 13:57:29EDT lwalling 
+** Update CDS after command to set DS enable/disable state
 ** Revision 1.16.1.1 2015/02/28 17:13:44EST sstrege 
 ** Added copyright information
 ** Revision 1.16 2011/07/12 17:41:48EDT lwalling 
@@ -212,6 +214,11 @@ void DS_CmdSetAppState(CFE_SB_MsgPtr_t MessagePtr)
         ** Set new DS application enable/disable state...
         */
         DS_AppData.AppEnableState = DS_AppStateCmd->EnableState;
+
+        /*
+        ** Update the Critical Data Store (CDS)...
+        */
+        DS_TableUpdateCDS();
 
         DS_AppData.CmdAcceptedCounter++;
 

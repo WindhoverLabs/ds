@@ -9,6 +9,7 @@ PROC $sc_$cpu_ds_tbl5
 ;	load image file.
 ;	
 ;  Prerequisite Conditions
+;	None.
 ;
 ;  Assumptions and Constraints
 ;	None.

@@ -10,6 +10,7 @@ PROC $sc_$cpu_ds_tbl3
 ;	used by the Filter and Reset No CDS test procedures.
 ;	
 ;  Prerequisite Conditions
+;	None.
 ;
 ;  Assumptions and Constraints
 ;	None.

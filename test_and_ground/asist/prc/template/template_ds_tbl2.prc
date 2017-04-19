@@ -10,6 +10,7 @@ PROC $sc_$cpu_ds_tbl2
 ;	used by the File Write test procedure.
 ;	
 ;  Prerequisite Conditions
+;	None.
 ;
 ;  Assumptions and Constraints
 ;	None.

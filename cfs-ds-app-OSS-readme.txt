@@ -1,10 +1,10 @@
 core Flight System (cFS) Data Storage Application (DS) 
 Open Source Release Readme
 
-DS Release 2.4.0 
+DS Release 2.4.1 
 
 Date: 
-February 27, 2015
+August 3, 2015
 
 Introduction:
   The Data Storage application (DS) is a core Flight System (cFS) application 
@@ -30,7 +30,7 @@ Introduction:
   available in cfs-ds-2.4.0-OSS-release/docs/users_guide
   
   There are also "Quick start" instructions provided in 
-  cFE-6.4.1-OSS-release/cfe-OSS-readme.txt   
+  cFE-6.4.2-OSS-release/cfe-OSS-readme.txt   
   
   The OSAL is available at http://sourceforge.net/projects/osal/ and 
   github.com/nasa/
@@ -42,7 +42,7 @@ Introduction:
  
  
 Software Included:
-  Data Storage application (DS) 2.4.0
+  Data Storage application (DS) 2.4.1
   
  
 Software Required:
@@ -51,7 +51,7 @@ Software Required:
  obtained at http://sourceforge.net/projects/osal or 
  github.com/nasa/osal
  
- core Flight Executive 6.4.1 or higher can be obtained at
+ core Flight Executive 6.4.2 or higher can be obtained at
  http://sorceforge.net/projects/coreflightexec
 
   

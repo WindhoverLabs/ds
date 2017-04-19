@@ -12,6 +12,7 @@ PROC $sc_$cpu_ds_badfiletbls
 ;	procedure.
 ;	
 ;  Prerequisite Conditions
+;	None.
 ;
 ;  Assumptions and Constraints
 ;	None.

@@ -75,6 +75,9 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="elRef" doxygen="cfe.tag:../cfe/" href="../cfe/common__types_8h.html#9560e25c315bae45d1ed4e2ce49ce55a">uint32</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_d_s___hk_packet__t.html#28203b9480c9b988cc21f8ba75937ba2">PassedPktCounter</a></td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Count of packets that passed filter test.  <a href="#28203b9480c9b988cc21f8ba75937ba2"></a><br></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">char&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_d_s___hk_packet__t.html#4522deea1c2815a1d45abd8fb1090801">FilterTblFilename</a> [<a class="elRef" doxygen="cfe.tag:../cfe/" href="../cfe/osconfig_8h.html#26640de8dfdf750721c8757341171828">OS_MAX_PATH_LEN</a>]</td></tr>
+
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Name of filter table file.  <a href="#4522deea1c2815a1d45abd8fb1090801"></a><br></td></tr>
 </table>
 <hr><a name="_details"></a><h2>Detailed Description</h2>
 <dl compact><dt><b><a class="el" href="cfsdstlm.html#_cfsdstlm000001">Name:</a></b></dt><dd>DS application housekeeping packet </dd></dl>
@@ -82,7 +85,7 @@
 <p>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00330">330</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.<hr><h2>Field Documentation</h2>
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00345">345</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.<hr><h2>Field Documentation</h2>
 <a class="anchor" name="c7ed97cb902752d0515565644b7d217b"></a><!-- doxytag: member="DS_HkPacket_t::AppEnableState" ref="c7ed97cb902752d0515565644b7d217b" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -100,7 +103,7 @@ Application enable/disable state.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000007">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_AppEnaState</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00346">346</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00361">361</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="c1c401cdbad9087d281511fbebc68e52"></a><!-- doxytag: member="DS_HkPacket_t::CmdAcceptedCounter" ref="c1c401cdbad9087d281511fbebc68e52" args="" -->
@@ -120,7 +123,7 @@ Count of valid commands received.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000001">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_CMDPC</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00334">334</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00349">349</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="02112235d3c2c4ba30caf25129d87b50"></a><!-- doxytag: member="DS_HkPacket_t::CmdRejectedCounter" ref="02112235d3c2c4ba30caf25129d87b50" args="" -->
@@ -140,7 +143,7 @@ Count of invalid commands received.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000002">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_CMDEC</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00336">336</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00351">351</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="a679a9e85fdd4ce4f118b3170d0f45b8"></a><!-- doxytag: member="DS_HkPacket_t::DestTblErrCounter" ref="a679a9e85fdd4ce4f118b3170d0f45b8" args="" -->
@@ -160,7 +163,7 @@ Count of failed attempts to get table data pointer.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000004">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_DestPtrErrCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00340">340</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00355">355</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="0495c86f56459716ee95e106ce58317e"></a><!-- doxytag: member="DS_HkPacket_t::DestTblLoadCounter" ref="0495c86f56459716ee95e106ce58317e" args="" -->
@@ -180,7 +183,7 @@ Count of destination file table loads.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000003">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_DestLoadCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00338">338</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00353">353</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="ddc5015bf484f31a9d6a0352a4e48a3e"></a><!-- doxytag: member="DS_HkPacket_t::DisabledPktCounter" ref="ddc5015bf484f31a9d6a0352a4e48a3e" args="" -->
@@ -200,7 +203,7 @@ Count of packets discarded (DS was disabled).
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000012">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_DisabledPktCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00358">358</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00373">373</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="12714a25bb0de3c6e7b2f6a719ac7876"></a><!-- doxytag: member="DS_HkPacket_t::FileUpdateCounter" ref="12714a25bb0de3c6e7b2f6a719ac7876" args="" -->
@@ -220,7 +223,7 @@ Count of good updates to secondary header.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000010">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_FileUpdCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00354">354</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00369">369</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="ba18c45787fb8a47496241159884ad59"></a><!-- doxytag: member="DS_HkPacket_t::FileUpdateErrCounter" ref="ba18c45787fb8a47496241159884ad59" args="" -->
@@ -240,7 +243,7 @@ Count of bad updates to secondary header.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000011">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DSFileUpdErrCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00356">356</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00371">371</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="d6b87f302996a12d31ed79768571ed1b"></a><!-- doxytag: member="DS_HkPacket_t::FileWriteCounter" ref="d6b87f302996a12d31ed79768571ed1b" args="" -->
@@ -260,7 +263,7 @@ Count of good destination file writes.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000008">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_FileWriteCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00350">350</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00365">365</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="2f9898f25e7d191448fe1e8963a03c8b"></a><!-- doxytag: member="DS_HkPacket_t::FileWriteErrCounter" ref="2f9898f25e7d191448fe1e8963a03c8b" args="" -->
@@ -280,7 +283,7 @@ Count of bad destination file writes.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000009">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_FileWriteErrCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00352">352</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00367">367</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="b03d90d4db8d96c01d0801ea5c1c8732"></a><!-- doxytag: member="DS_HkPacket_t::FilteredPktCounter" ref="b03d90d4db8d96c01d0801ea5c1c8732" args="" -->
@@ -300,7 +303,7 @@ Count of packets discarded (failed filter test).
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000014">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_FilteredPktCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00365">365</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00380">380</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="645a2e3adfeac65170d3d2b940cb9003"></a><!-- doxytag: member="DS_HkPacket_t::FilterTblErrCounter" ref="645a2e3adfeac65170d3d2b940cb9003" args="" -->
@@ -320,7 +323,27 @@ Count of failed attempts to get table data pointer.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000006">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_FilterPtrErrCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00344">344</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00359">359</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+</div>
+</div><p>
+<a class="anchor" name="4522deea1c2815a1d45abd8fb1090801"></a><!-- doxytag: member="DS_HkPacket_t::FilterTblFilename" ref="4522deea1c2815a1d45abd8fb1090801" args="[OS_MAX_PATH_LEN]" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char <a class="el" href="struct_d_s___hk_packet__t.html#4522deea1c2815a1d45abd8fb1090801">DS_HkPacket_t::FilterTblFilename</a>[<a class="elRef" doxygen="cfe.tag:../cfe/" href="../cfe/osconfig_8h.html#26640de8dfdf750721c8757341171828">OS_MAX_PATH_LEN</a>]          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+Name of filter table file. 
+<p>
+<dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000016">Telemetry Mnemonic(s):</a></b></dt><dd><b><code></code> </b> </dd></dl>
+
+<p>
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00384">384</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="e094f2497c2735a2f5b63cac992c934b"></a><!-- doxytag: member="DS_HkPacket_t::FilterTblLoadCounter" ref="e094f2497c2735a2f5b63cac992c934b" args="" -->
@@ -340,7 +363,7 @@ Count of packet filter table loads.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000005">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_FilterLoadCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00342">342</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00357">357</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="39fb72d645e6e20eaf62b0ad1bce9879"></a><!-- doxytag: member="DS_HkPacket_t::IgnoredPktCounter" ref="39fb72d645e6e20eaf62b0ad1bce9879" args="" -->
@@ -366,7 +389,7 @@ A packet (that is not a DS HK or command packet) has been received that is not l
 </ul>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00360">360</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00375">375</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="28203b9480c9b988cc21f8ba75937ba2"></a><!-- doxytag: member="DS_HkPacket_t::PassedPktCounter" ref="28203b9480c9b988cc21f8ba75937ba2" args="" -->
@@ -386,7 +409,7 @@ Count of packets that passed filter test.
 <dl compact><dt><b><a class="el" href="cfsdstlmmnems.html#_cfsdstlmmnems000015">Telemetry Mnemonic(s):</a></b></dt><dd><b><code>$sc_$cpu_DS_PassedPktCnt</code> </b> </dd></dl>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00367">367</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00382">382</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="a8860ebb09e7f83dc20b4fb89900fc0d"></a><!-- doxytag: member="DS_HkPacket_t::Spare8" ref="a8860ebb09e7f83dc20b4fb89900fc0d" args="" -->
@@ -405,7 +428,7 @@ Structure alignment padding.
 <p>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00348">348</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00363">363</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <a class="anchor" name="a560364f8a01bd93f5eb2f0cdcd8ad9c"></a><!-- doxytag: member="DS_HkPacket_t::TlmHeader" ref="a560364f8a01bd93f5eb2f0cdcd8ad9c" args="[CFE_SB_TLM_HDR_SIZE]" -->
@@ -424,12 +447,12 @@ cFE Software Bus telemetry message header
 <p>
 
 <p>
-Definition at line <a class="el" href="ds__msg_8h-source.html#l00332">332</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
+Definition at line <a class="el" href="ds__msg_8h-source.html#l00347">347</a> of file <a class="el" href="ds__msg_8h-source.html">ds_msg.h</a>.
 </div>
 </div><p>
 <hr>The documentation for this struct was generated from the following file:<ul>
 <li>ds/fsw/src/<a class="el" href="ds__msg_8h-source.html">ds_msg.h</a></ul>
-<hr size="1"><address style="align: right;"><small>Generated on Tue Jan 20 17:25:39 2015 for CFS Data Storage (DS) Application on  User's Guide by&nbsp;
+<hr size="1"><address style="align: right;"><small>Generated on Mon Jul 27 10:54:33 2015 for CFS Data Storage (DS) Application on  User's Guide by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>

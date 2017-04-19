@@ -70,9 +70,11 @@ PROC $sc_$cpu_ds_filewrite
 ;			c. Close the destination file
 ;			d. Disable the destination
 ;   cDS5000	Upon receipt of a Disable command, DS shall stop filtering and
-;		storing messages.
+;		storing messages. NOTE: This command will set the Packet
+;		Processing State to DISABLED.
 ;   cDS5001	Upon receipt of a Enable command, DS shall begin filtering and
-;		storing messages.
+;		storing messages. NOTE: This command will set the Packet
+;		Processing State to ENABLED.
 ;   cDS5002	Upon receipt of a Close File command, DS shall close the
 ;		command-specified files.
 ;   cDS5003	Upon receipt of a Set File Basename command, DS shall set the
@@ -543,7 +545,7 @@ local expHdrUpdates = $SC_$CPU_DS_FileUpdCnt + 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=3 Pattern=x'AA'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG3_SENT_INF_EID," rcv'd."
 else
@@ -632,7 +634,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close command
 /$SC_$CPU_DS_CloseFile FileIndex=seqFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -668,7 +670,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG5_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=5 Pattern=x'A5'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG5_SENT_INF_EID," rcv'd."
 else
@@ -792,7 +794,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG1_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=timeMsgID MsgType=1 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -903,7 +905,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG4_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=4 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG4_SENT_INF_EID," rcv'd."
 else
@@ -969,7 +971,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG3_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=3 Pattern=x'AA'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG3_SENT_INF_EID," rcv'd."
 else
@@ -1049,7 +1051,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG2_SENT_INF_EID, "INFO", 1
 wait 10
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG2_SENT_INF_EID," rcv'd."
 else
@@ -1100,7 +1102,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetBasename FileIndex=seqFileEntry BaseName="sequenceFile"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - DS Set Basename command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1112,7 +1114,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - Expected Event Msg ",DS_BASE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1131,7 +1133,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetBasename FileIndex=timeFileEntry BaseName="timeFile"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - DS Set Basename command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1143,7 +1145,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - Expected Event Msg ",DS_BASE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1174,14 +1176,14 @@ wait 5
 wait 5
 
 ;; Check for the event messages
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
   write "<!> Failed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," was not generated."
 endif
 
-ut_tlmwait  $SC_$CPU_find_event[3].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[3].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG3_SENT_INF_EID," rcv'd."
 else
@@ -1372,7 +1374,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG1_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=1 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -1419,7 +1421,7 @@ local cmdCtr = $SC_$CPU_DS_CMDPC + 1
 ;; Send the Close command
 /$SC_$CPU_DS_CloseFile FileIndex=seqFileEntry
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - DS Close File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1431,7 +1433,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5002) - Expected Event Msg ",DS_CLOSE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1494,7 +1496,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 ;; Send the Close command
 /$SC_$CPU_DS_CloseFile FileIndex=DS_DEST_FILE_CNT
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Close File command failed as expected."
   ut_setrequirements DS_1005, "P"
@@ -1504,7 +1506,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_CLOSE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -1526,7 +1528,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetBasename FileIndex=seqFileEntry BaseName="newSeq"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - DS Set Basename command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1538,7 +1540,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - Expected Event Msg ",DS_BASE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1577,7 +1579,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG1_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=1 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -1625,7 +1627,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetBasename FileIndex=seqFileEntry BaseName=""
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - DS Set Basename command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1637,7 +1639,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5003) - Expected Event Msg ",DS_BASE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1676,7 +1678,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG3_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=3 Pattern=x'AA'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG3_SENT_INF_EID," rcv'd."
 else
@@ -1778,7 +1780,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_SetBasename FileIndex=DS_DEST_FILE_CNT BaseName="badSeq"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Basename command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -1788,7 +1790,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Expected Event Msg ",DS_BASE_CMD_ERR_EID," rcv'd."
   ut_setrequirements DS_1005, "P"
@@ -1810,7 +1812,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetFileSeqCtr FileIndex=seqFileEntry SeqCount=99
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5004) - DS Set File Sequence Counter command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -1822,7 +1824,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5004) - Expected Event Msg ",DS_SEQ_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -1861,7 +1863,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG1_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=1 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -1966,7 +1968,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_SetFileSeqCtr FileIndex=DS_DEST_FILE_CNT SeqCount=155
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set File Sequence Counter command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -1976,7 +1978,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -1998,7 +2000,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_DisableFile FileIndex=seqFileEntry
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5006) - DS Disable Destination File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2068,7 +2070,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG1_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=1 Pattern=x'55'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -2149,7 +2151,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_DisableFile FileIndex=DS_DEST_FILE_CNT
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Disable Destination File command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -2159,7 +2161,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -2220,7 +2222,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_DisableFile FileIndex=seqFileEntry
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5006) - DS Disable Destination File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2232,7 +2234,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5006) - Expected Event Msg ",DS_STATE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2256,7 +2258,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_EnableFile FileIndex=seqFileEntry
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5005) - DS Enable Destination File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2268,7 +2270,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5005) - Expected Event Msg ",DS_STATE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2328,7 +2330,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG1_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=1 Pattern=x'AA'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -2412,7 +2414,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_EnableFile FileIndex=DS_DEST_FILE_CNT
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Enable Destination File command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -2422,7 +2424,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -2483,7 +2485,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_EnableFile FileIndex=seqFileEntry
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5005) - DS Enable Destination File command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2495,7 +2497,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5005) - Expected Event Msg ",DS_STATE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2519,7 +2521,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetFileType FileIndex=seqFileEntry FileType=DS_BY_TIME
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5011) - DS Set Destination File Type command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2531,7 +2533,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5011) - Expected Event Msg ",DS_NTYPE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2570,7 +2572,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG3_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=3 Pattern=x'BB'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG3_SENT_INF_EID," rcv'd."
 else
@@ -2673,7 +2675,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_SetFileType FileIndex=DS_DEST_FILE_CNT FileType=DS_BY_TIME
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Destination File Type command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -2683,7 +2685,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -2706,7 +2708,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_SetFileType FileIndex=seqFileEntry FileType=3
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Destination File Type command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -2716,7 +2718,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -2738,7 +2740,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetPath FileIndex=seqFileEntry PathName="/cf/"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5012) - DS Set Path command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -2750,7 +2752,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5012) - Expected Event Msg ",DS_PATH_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -2789,7 +2791,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG3_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=3 Pattern=x'A5'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG3_SENT_INF_EID," rcv'd."
 else
@@ -2890,7 +2892,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_SetPath FileIndex=DS_DEST_FILE_CNT PathName="/ram/"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Path command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -2900,7 +2902,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -2923,7 +2925,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_SetPath FileIndex=seqFileEntry PathName=""
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Path command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -2933,7 +2935,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -2957,7 +2959,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetPath FileIndex=seqFileEntry PathName="/ram/waltsDir"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Path command with a non-existent path sent properly."
   ut_setrequirements DS_1005, "P"
@@ -2967,7 +2969,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -2990,7 +2992,7 @@ ut_setupevents "$SC", "$CPU", {DSAppName}, DS_CREATE_FILE_ERR_EID, "ERROR", 2
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=seqMsgID MsgType=1 Pattern=x'BB'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG1_SENT_INF_EID," rcv'd."
 else
@@ -3040,7 +3042,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetExtension FileIndex=timeFileEntry Extension=".dat"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5013) - DS Set Extension command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -3052,7 +3054,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5013) - Expected Event Msg ",DS_EXT_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -3091,7 +3093,7 @@ ut_setupevents "$SC", "$CPU", "TST_DS", TST_DS_MSG3_SENT_INF_EID, "INFO", 1
 /$SC_$CPU_TST_DS_SENDMESSAGE MsgID=timeMsgID MsgType=3 Pattern=x'AA'
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed - Expected Event Msg ",TST_DS_MSG3_SENT_INF_EID," rcv'd."
 else
@@ -3178,7 +3180,7 @@ errcnt = $SC_$CPU_DS_CMDEC + 1
 /$SC_$CPU_DS_SetExtension FileIndex=DS_DEST_FILE_CNT Extension=".icu"
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDEC, {errcnt}
+ut_tlmwait $SC_$CPU_DS_CMDEC, {errcnt}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Extension command failed as expected with an invalid file index."
   ut_setrequirements DS_1005, "P"
@@ -3188,7 +3190,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -3212,7 +3214,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetExtension FileIndex=timeFileEntry Extension=""
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - DS Set Extension command passed with a null extension."
   ut_setrequirements DS_1005, "P"
@@ -3222,7 +3224,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1005) - Event message ",$SC_$CPU_find_event[1].eventid, " received"
   ut_setrequirements DS_1005, "P"
@@ -3260,7 +3262,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetMaxFileSize FileIndex=seqFileEntry MaxSize=5500
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5014) - DS Set Maximum Size command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -3272,7 +3274,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5014) - Expected Event Msg ",DS_SIZE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -3464,7 +3466,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_SetMaxFileAge FileIndex=timeFileEntry MaxAge=90
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5015) - DS Set Maximum Age command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -3476,7 +3478,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5015) - Expected Event Msg ",DS_AGE_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -3662,7 +3664,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_Disable
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5000) - DS Disable command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -3674,7 +3676,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5000) - Expected Event Msg ",DS_ENADIS_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"
@@ -3789,7 +3791,7 @@ cmdCtr = $SC_$CPU_DS_CMDPC + 1
 /$SC_$CPU_DS_Enable
 wait 5
 
-ut_tlmwait  $SC_$CPU_DS_CMDPC, {cmdCtr}
+ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5001) - DS Enable command sent properly."
   ut_setrequirements DS_1004, "P"
@@ -3801,7 +3803,7 @@ else
 endif
 
 ;; Check for the event message
-ut_tlmwait  $SC_$CPU_find_event[1].num_found_messages, 1
+ut_tlmwait $SC_$CPU_find_event[1].num_found_messages, 1
 if (UT_TW_Status = UT_Success) then
   write "<*> Passed (1004;5001) - Expected Event Msg ",DS_ENADIS_CMD_EID," rcv'd."
   ut_setrequirements DS_1004, "P"

@@ -11,6 +11,7 @@ PROC $sc_$cpu_ds_badfiltertbls
 ;	message. This table image is used in the ResetNoCDS test procedure.
 ;	
 ;  Prerequisite Conditions
+;	None.
 ;
 ;  Assumptions and Constraints
 ;	None.

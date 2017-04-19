@@ -10,6 +10,7 @@ PROC $sc_$cpu_ds_tbl4
 ;	used by the MoveFile test procedure.
 ;	
 ;  Prerequisite Conditions
+;	None.
 ;
 ;  Assumptions and Constraints
 ;	None.

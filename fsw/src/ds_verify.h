@@ -1,6 +1,6 @@
 /************************************************************************
 ** File:
-**   $Id: ds_verify.h 1.10.1.1 2015/02/28 17:14:04EST sstrege Exp  $
+**   $Id: ds_verify.h 1.10.1.2 2015/07/28 14:02:33EDT lwalling Exp  $
 **
 **  Copyright © 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
@@ -17,6 +17,8 @@
 ** Notes:
 **
 ** $Log: ds_verify.h  $
+** Revision 1.10.1.2 2015/07/28 14:02:33EDT lwalling 
+** Add verification for definition of DS_CDS_ENABLE_STATE
 ** Revision 1.10.1.1 2015/02/28 17:14:04EST sstrege 
 ** Added copyright information
 ** Revision 1.10 2010/11/12 11:34:21EST lwalling 
@@ -215,6 +217,13 @@
     #error DS_DEF_ENABLE_STATE must be defined!
 #elif ((DS_DEF_ENABLE_STATE != 0) && (DS_DEF_ENABLE_STATE != 1))
     #error DS_DEF_ENABLE_STATE must be 0 or 1!
+#endif
+
+
+#ifndef DS_CDS_ENABLE_STATE
+    #error DS_CDS_ENABLE_STATE must be defined!
+#elif ((DS_CDS_ENABLE_STATE != 0) && (DS_CDS_ENABLE_STATE != 1))
+    #error DS_CDS_ENABLE_STATE must be 0 or 1!
 #endif
 
 

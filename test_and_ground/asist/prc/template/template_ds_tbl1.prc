@@ -10,6 +10,7 @@ PROC $sc_$cpu_ds_tbl1
 ;	used by the General Commanding test procedure.
 ;	
 ;  Prerequisite Conditions
+;	None.
 ;
 ;  Assumptions and Constraints
 ;	None.

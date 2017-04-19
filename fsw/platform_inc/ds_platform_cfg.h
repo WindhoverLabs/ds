@@ -1,6 +1,6 @@
 /************************************************************************
 ** File:
-**   $Id: ds_platform_cfg.h 1.17.1.1 2015/02/28 17:13:51EST sstrege Exp  $
+**   $Id: ds_platform_cfg.h 1.17.1.3 2015/07/28 14:19:49EDT lwalling Exp  $
 **
 **  Copyright © 2007-2014 United States Government as represented by the 
 **  Administrator of the National Aeronautics and Space Administration. 
@@ -17,6 +17,10 @@
 ** Notes:
 **
 ** $Log: ds_platform_cfg.h  $
+** Revision 1.17.1.3 2015/07/28 14:19:49EDT lwalling 
+** Update restoring task enable/disable state comments
+** Revision 1.17.1.2 2015/07/28 14:14:45EDT lwalling 
+** Add definition for DS_CDS_ENABLE_STATE to allow storage of enable/disable state in CDS
 ** Revision 1.17.1.1 2015/02/28 17:13:51EST sstrege 
 ** Added copyright information
 ** Revision 1.17 2010/11/12 11:33:29EST lwalling 
@@ -433,6 +437,24 @@
 **       This parameter must be set to zero or one.
 */
 #define DS_DEF_ENABLE_STATE             1
+
+
+/**
+**  \dscfg Save DS Packet Processor State in Critical Data Store
+**
+**  \par Description:
+**       Set this parameter to a value of one and DS will restore
+**       the previous Packet Processor enable/disable state after
+**       a processor reset.  This setting does not affect the
+**       Packet Processor enable/disable state set at power-on
+**       which is controlled by #DS_DEF_ENABLE_STATE.  Set the
+**       value to zero and DS will set the enable/disable state
+**       as described for #DS_DEF_ENABLE_STATE following any reset.
+**
+**  \par Limits
+**       This parameter must be set to zero or one.
+*/
+#define DS_CDS_ENABLE_STATE             1
 
 
 /** \dscfg Mission specific version number for DS application

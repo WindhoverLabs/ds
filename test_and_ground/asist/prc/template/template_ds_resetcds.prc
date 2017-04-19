@@ -62,11 +62,12 @@ PROC $sc_$cpu_ds_resetcds
 ;    cDS9002	Upon cFE Processor Reset or DS Application Reset, DS shall close
 ;		all files.
 ;    cDS9003	Upon a cFE Processor Reset or DS Application Reset, DS shall
-;		restore the following if the <PLATFORM_DEFINED> Save State is
-;		set to YES:
+;		restore the following if the associated <PLATFORM_DEFINED> 
+;		Preserve Flag is set to TRUE:
 ;			a. Packet Filter Table
 ;			b. Destination File Table
 ;			c. File Sequence number for all Destination File Sets
+;                       d. Packet Processing State (ENABLED or DISABLED)
 ;    cDS9005	Upon any initialization and/or Packet Filter Table Update, DS
 ;		shall validate the Packet Filter Table:
 ;			a. Table descriptor text
@@ -90,6 +91,8 @@ PROC $sc_$cpu_ds_resetcds
 ;			g. Max file size
 ;			h. Max file age
 ;			i. Sequence count
+;    cDS9008    Upon cFE Power-On, DS shall set the Packet Processing State to
+;               the <PLATFORM_DEFINED> state (ENABLED or DISABLED).
 ;
 ;  Prerequisite Conditions
 ;	The cFE is up and running and ready to accept commands.
@@ -109,6 +112,7 @@ PROC $sc_$cpu_ds_resetcds
 ;                                       for the application name and ram disk.
 ;       01/22/15        Walt Moleski    Removed DS9001.1 from this procedure
 ;                                       since it was deleted for 2.4.0.0
+;       07/24/15        Walt Moleski    Added DS9008 and tests for 2.4.1.0
 ;
 ;  Arguments
 ;	None.
@@ -153,8 +157,9 @@ local logging = %liv (log_procedure)
 #define DS_9005		5
 #define DS_9006		6
 #define DS_9007		7
+#define DS_9008		8
 
-global ut_req_array_size = 7
+global ut_req_array_size = 8
 global ut_requirement[0 .. ut_req_array_size]
 
 for i = 0 to ut_req_array_size DO
@@ -164,7 +169,7 @@ enddo
 ;**********************************************************************
 ; Set the local values
 ;**********************************************************************
-local cfe_requirements[0 .. ut_req_array_size] = ["DS_8000", "DS_9000", "DS_9001", "DS_9002", "DS_9003", "DS_9005", "DS_9006", "DS_9007" ]
+local cfe_requirements[0 .. ut_req_array_size] = ["DS_8000", "DS_9000", "DS_9001", "DS_9002", "DS_9003", "DS_9005", "DS_9006", "DS_9007", "DS_9008" ]
 
 ;**********************************************************************
 ; Define local variables
@@ -588,6 +593,20 @@ endif
 
 wait 5
 
+;; For DS 2.4.1.0, disable the DS Application before the reset
+if (p@$SC_$CPU_DS_AppEnaState = "Enabled") then
+  cmdCtr = $SC_$CPU_DS_CMDPC + 1
+  ;; Send the command
+  /$SC_$CPU_DS_Disable
+  
+  ut_tlmwait $SC_$CPU_DS_CMDPC, {cmdCtr}
+  if (UT_TW_Status = UT_Success) then
+    write "<*> Passed - DS Application Disable command sent properly."
+  else
+    write "<!> Failed - DS Application Disable command did not increment CMDPC."
+  endif
+endif 
+
 write ";*********************************************************************"
 write ";  Step 2.4: Perform a Processor Reset. "
 write ";*********************************************************************"
@@ -685,6 +704,38 @@ if (foundSubscription = filterEntries) then
 else
   write "<!> Failed (9006) - Expected ",filterEntries," message ID subscriptions. Found ",foundSubscription
   ut_setrequirements DS_9006, "F"
+endif
+
+;; For DS 2.4.1.0, check the new config parameter DS_CDS_ENABLE_STATE
+;; If this parameter is set to 1, the DS Application State is preserved.
+;; Otherwise, the Default state should be set
+if (DS_CDS_ENABLE_STATE = 1) then
+  if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
+    write "<*> Passed (9003) - DS Application State is disabled as expected."
+    ut_setrequirements DS_9003, "P"
+  else
+    write "<!> Failed (9003) - DS Application State is NOT disabled as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
+    ut_setrequirements DS_9003, "F"
+  endif
+else
+  if (DS_DEF_ENABLE_STATE = 1) then
+    if (p@$SC_$CPU_DS_AppEnaState = "Enabled") then
+      write "<*> Passed (9008) - DS Application State is enabled as expected."
+      ut_setrequirements DS_9008, "P"
+    else
+      write "<!> Failed (9008) - DS Application State is NOT enabled as expected
+. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
+      ut_setrequirements DS_9008, "F"
+    endif
+  else
+    if (p@$SC_$CPU_DS_AppEnaState = "Disabled") then
+      write "<*> Passed (9008) - DS Application State is disabled as expected."
+      ut_setrequirements DS_9008, "P"
+    else
+      write "<!> Failed (9008) - DS Application State is NOT disabled as expected. State = '",p@$SC_$CPU_DS_AppEnaState,"'"
+      ut_setrequirements DS_9008, "F"
+    endif
+  endif
 endif
 
 wait 5

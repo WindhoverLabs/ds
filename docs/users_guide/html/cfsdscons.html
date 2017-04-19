@@ -17,7 +17,7 @@
 <a class="el" href="index.html">CFS Data Storage (DS) User's Guide</a></div>
 <h1><a class="anchor" name="cfsdscons">CFS Data Storage Operational Constraints</a></h1>The Data Storage (DS) application attempts to load the File and Filter Tables from DS_DEF_DEST_FILENAME and DS_DEF_FILTER_FILENAME upon startup. If the load fails for either of these tables, DS will still start in the mode of operation as defined by the DS_DEF_ENABLE_STATE configuration parameter. If this configuration parameter is set to ENABLED mode and either the File and/or Filter Table failed to load, DS will not store any messages until both tables are loaded with valid data. This can be accomplished by using the cFE Table Services commands after creating a table load image file and uploading it to the spacecraft's file system. Until both tables are loaded with valid data, DS will increment the DS_IGNOREDPKTCNT for each received packet that is discarded.<p>
 Next: <a class="el" href="cfsdsfaqs.html">CFS Data Storage Frequently Asked Questions</a> <br>
- Prev: <a class="el" href="cfsdscfg.html">CFS Data Storage Configuration Parameters</a> <hr size="1"><address style="align: right;"><small>Generated on Tue Jan 20 17:25:39 2015 for CFS Data Storage (DS) Application on  User's Guide by&nbsp;
+ Prev: <a class="el" href="cfsdscfg.html">CFS Data Storage Configuration Parameters</a> <hr size="1"><address style="align: right;"><small>Generated on Mon Jul 27 10:54:33 2015 for CFS Data Storage (DS) Application on  User's Guide by&nbsp;
 <a href="http://www.doxygen.org/index.html">
 <img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.4.7 </small></address>
 </body>
