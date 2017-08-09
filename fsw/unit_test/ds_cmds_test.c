@@ -1444,7 +1444,7 @@ void DS_CmdSetDestExt_Test_FileTableNotLoaded(void)
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, DS_SET_DEST_EXT_CC);
 
     CmdPacket.FileTableIndex = 1;
-    strncpy (CmdPacket.Extension, "txt", DS_SET_DEST_EXT_CC);
+    strncpy (CmdPacket.Extension, "txt", sizeof(CmdPacket.Extension));
 
     DS_AppData.DestFileTblPtr = 0;
 
