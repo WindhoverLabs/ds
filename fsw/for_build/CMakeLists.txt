@@ -6,12 +6,8 @@ add_airliner_app_def(ds
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ds_cmds.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ds_file.c
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ds_table.c
-   
     INCLUDES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/
-
-    USER_DOCS   ${CMAKE_CURRENT_SOURCE_DIR}/user_doxy.in
-    DESIGN_DOCS ${CMAKE_CURRENT_SOURCE_DIR}/detail_doxy.in
 )
 
 
