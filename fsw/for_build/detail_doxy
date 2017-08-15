@@ -1,15 +1,14 @@
 # Doxyfile 1.5.4
-@INCLUDE_PATH=../docs/dox_src/mnem_maps \
-              $(CFS_APP_SRC)/$(APPTARGET)/docs/dox_src/mnem_maps
-@INCLUDE=cfs_$(APPTARGET)_cmd_mnem_map
-@INCLUDE=cfs_$(APPTARGET)_tlm_mnem_map
+@INCLUDE_PATH=@APP_DEFINITION_DIR@/../../docs/dox_src/mnem_maps
+@INCLUDE=cfs_ds_cmd_mnem_map
+@INCLUDE=cfs_ds_tlm_mnem_map
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
 #DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = "CFS Data Storage (DS) Application on $(CPUNAME) Detailed Design"
+PROJECT_NAME           = "CFS Data Storage (DS) Application on @BUILD_CONFIG_NAME@ Detailed Design"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = ../docs/detailed_design/html/$(APPTARGET)
+OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/detailed_design/apps/ds
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES

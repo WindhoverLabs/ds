@@ -1,5 +1,5 @@
 # Doxyfile 1.5.4
-@INCLUDE_PATH=@PROJECT_SOURCE_DIR@/apps/ds/docs/dox_src/mnem_maps
+@INCLUDE_PATH=@APP_DEFINITION_DIR@/../../docs/dox_src/mnem_maps
 @INCLUDE=cfs_ds_cmd_mnem_map
 @INCLUDE=cfs_ds_tlm_mnem_map
 #---------------------------------------------------------------------------
@@ -8,7 +8,7 @@
 #DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "CFS Data Storage (DS) Application on @BUILD_CONFIG_NAME@ User's Guide"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = @CMAKE_BINARY_DIR@/docs/users_guide/apps/ds
+OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/users_guide/apps/ds
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -91,15 +91,13 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = @PROJECT_SOURCE_DIR@/apps/ds/docs/dox_src/users_guide/cfs_ds.dox
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/ds/fsw/src/ds_msgdefs.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/ds/fsw/src/ds_msg.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/ds/fsw/src/ds_table.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/ds/fsw/src/ds_events.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/apps/ds/fsw/src/ds_appdefs.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/config/shared/inc/ds_perfids.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/config/shared/inc/ds_msgids.h 
-INPUT                 += @PROJECT_SOURCE_DIR@/config/softsim/default/inc/ds_platform_cfg.h 
+INPUT                  = @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/cfs_ds.dox
+INPUT                 += @APP_DEFINITION_DIR@/../src/ds_msgdefs.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/ds_msg.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/ds_table.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/ds_events.h 
+INPUT                 += @APP_DEFINITION_DIR@/../src/ds_appdefs.h 
+INPUT                 += @CONFIG_SOURCES@
 
 #INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
@@ -113,7 +111,7 @@ EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = "./"
-IMAGE_PATH            += "@PROJECT_SOURCE_DIR@/apps/ds/docs/dox_src/users_guide/"
+IMAGE_PATH            += @APP_DEFINITION_DIR@/../../docs/dox_src/users_guide/"
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
@@ -138,7 +136,7 @@ IGNORE_PREFIX          =
 # configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
-HTML_OUTPUT            = @CMAKE_BINARY_DIR@/docs/users_guide/apps/ds
+HTML_OUTPUT            = @CFS_DOCS_HTML_DIR@/users_guide/apps/ds
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = 
@@ -224,8 +222,8 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
-TAGFILES               = @CMAKE_BINARY_DIR@/docs/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
-GENERATE_TAGFILE       = @CMAKE_BINARY_DIR@/docs/users_guide/apps/ds/ds.tag
+TAGFILES               = @CFS_DOCS_HTML_DIR@/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
+GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/users_guide/apps/ds/ds.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 PERL_PATH              = /usr/bin/perl
