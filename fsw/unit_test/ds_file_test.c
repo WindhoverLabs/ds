@@ -76,9 +76,9 @@ void DS_FileStorePacket_Test_Nominal(void)
 {
     DS_NoopCmd_t        CmdPacket  = {0};
     CFE_SB_MsgId_t      MessageID = 0x18BB;
-    DS_FilterTable_t    FilterTable;
-    DS_DestFileTable_t  DestFileTable;
-    DS_HashLink_t       HashLink;
+    DS_FilterTable_t    FilterTable = {0};
+    DS_DestFileTable_t  DestFileTable = {0};
+    DS_HashLink_t       HashLink = {0};
 
     CFE_SB_InitMsg (&CmdPacket, DS_CMD_MID, sizeof(DS_NoopCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, DS_NOOP_CC);
@@ -125,11 +125,11 @@ void DS_FileStorePacket_Test_PacketNotInTable(void)
 
 void DS_FileStorePacket_Test_PassedFilterFalse(void)
 {
-    DS_NoopCmd_t        CmdPacket;
+    DS_NoopCmd_t        CmdPacket = {0};
     CFE_SB_MsgId_t      MessageID = 0x18BB;
-    DS_FilterTable_t    FilterTable;
-    DS_DestFileTable_t  DestFileTable;
-    DS_HashLink_t       HashLink;
+    DS_FilterTable_t    FilterTable = {0};
+    DS_DestFileTable_t  DestFileTable = {0};
+    DS_HashLink_t       HashLink = {0};
 
     CFE_SB_InitMsg (&CmdPacket, DS_CMD_MID, sizeof(DS_NoopCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, DS_NOOP_CC);
@@ -186,9 +186,9 @@ void DS_FileSetupWrite_Test_Nominal(void)
 
 void DS_FileSetupWrite_Test_FileHandleClosed(void)
 {
-    DS_NoopCmd_t        CmdPacket;
+    DS_NoopCmd_t        CmdPacket = {0};
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     CFE_SB_InitMsg (&CmdPacket, DS_CMD_MID, sizeof(DS_NoopCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, DS_NOOP_CC);
@@ -215,9 +215,9 @@ void DS_FileSetupWrite_Test_FileHandleClosed(void)
 
 void DS_FileSetupWrite_Test_MaxFileSizeExceeded(void)
 {
-    DS_NoopCmd_t        CmdPacket;
+    DS_NoopCmd_t        CmdPacket = {0};
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     CFE_SB_InitMsg (&CmdPacket, DS_CMD_MID, sizeof(DS_NoopCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, DS_NOOP_CC);
@@ -251,7 +251,7 @@ void DS_FileSetupWrite_Test_MaxFileSizeExceeded(void)
 
 void DS_FileWriteData_Test_Nominal(void)
 {
-    DS_NoopCmd_t        CmdPacket;
+    DS_NoopCmd_t        CmdPacket = {0};
     CFE_SB_MsgId_t      FileIndex = 0;
     uint32              DataLength = 10;
 
@@ -279,10 +279,10 @@ void DS_FileWriteData_Test_Nominal(void)
 
 void DS_FileWriteData_Test_Error(void)
 {
-    DS_NoopCmd_t        CmdPacket;
+    DS_NoopCmd_t        CmdPacket = {0};
     CFE_SB_MsgId_t      FileIndex = 0;
     uint32              DataLength = 10;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -310,7 +310,7 @@ void DS_FileWriteData_Test_Error(void)
 void DS_FileWriteHeader_Test_PlatformConfigCFE_Nominal(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -338,7 +338,7 @@ void DS_FileWriteHeader_Test_PlatformConfigCFE_Nominal(void)
 void DS_FileWriteHeader_Test_PrimaryHeaderError(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -361,7 +361,7 @@ void DS_FileWriteHeader_Test_PrimaryHeaderError(void)
 void DS_FileWriteHeader_Test_SecondaryHeaderError(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -437,7 +437,7 @@ void DS_FileWriteError_Test(void)
     CFE_SB_MsgId_t      FileIndex = 0;
     uint32              DataLength = 10;
     int32               WriteResult = -1;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -465,7 +465,7 @@ void DS_FileWriteError_Test(void)
 void DS_FileCreateDest_Test_Nominal(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -508,7 +508,7 @@ void DS_FileCreateDest_Test_Nominal(void)
 void DS_FileCreateDest_Test_Error(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -547,7 +547,7 @@ void DS_FileCreateDest_Test_Error(void)
 void DS_FileCreateName_Test_Nominal(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
@@ -574,7 +574,7 @@ void DS_FileCreateName_Test_Nominal(void)
 void DS_FileCreateName_Test_Error(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
     int32               i;
     char                EventMessage[300];
 
@@ -610,7 +610,7 @@ void DS_FileCreateName_Test_Error(void)
 void DS_FileCreateSequence_Test_ByCount(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     char Sequence[DS_TOTAL_FNAME_BUFSIZE];
 
@@ -636,7 +636,7 @@ void DS_FileCreateSequence_Test_ByCount(void)
 void DS_FileCreateSequence_Test_ByTime(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     char Sequence[DS_TOTAL_FNAME_BUFSIZE];
 
@@ -662,7 +662,7 @@ void DS_FileCreateSequence_Test_ByTime(void)
 void DS_FileCreateSequence_Test_BadFilenameType(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     char Sequence[DS_TOTAL_FNAME_BUFSIZE];
 
@@ -977,7 +977,7 @@ void DS_FileTestAge_Test_Nominal(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
     uint32              ElapsedSeconds = 2;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
     uint32              i;
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
@@ -1007,7 +1007,7 @@ void DS_FileTestAge_Test_ExceedMaxAge(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
     uint32              ElapsedSeconds = 2;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 

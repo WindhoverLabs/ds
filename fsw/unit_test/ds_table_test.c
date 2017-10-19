@@ -433,7 +433,7 @@ void DS_TableManageFilter_Test_TableInfoUpdatePending(void)
 void DS_TableVerifyDestFile_Test_Nominal(void)
 {
     int32               Result;
-    DS_DestFileTable_t  DestFileTable;
+    DS_DestFileTable_t  DestFileTable = {0};
     uint32              FileIndex = 0;
     uint32              i;
 
@@ -1326,7 +1326,7 @@ void DS_TableVerifyCount_Test_Fail(void)
 
 void DS_TableSubscribe_Test(void)
 {
-    DS_FilterTable_t  FilterTable;
+    DS_FilterTable_t  FilterTable = {0};
 
     DS_AppData.FilterTblPtr = &FilterTable;
 
@@ -1341,7 +1341,7 @@ void DS_TableSubscribe_Test(void)
 
 void DS_TableUnsubscribe_Test(void)
 {
-    DS_FilterTable_t  FilterTable;
+    DS_FilterTable_t  FilterTable = {0};
 
     DS_AppData.FilterTblPtr = &FilterTable;
 
@@ -1465,9 +1465,9 @@ void DS_TableHashFunction_Test(void)
 
 void DS_TableCreateHash_Test_Nominal(void)
 {
-    DS_HashLink_t     HashLink1;
-    DS_HashLink_t     HashLink2;
-    DS_FilterTable_t  FilterTable; 
+    DS_HashLink_t     HashLink1 = {0};
+    DS_HashLink_t     HashLink2 = {0};
+    DS_FilterTable_t  FilterTable = {0};
 
     DS_AppData.FilterTblPtr = &FilterTable;
 
@@ -1491,7 +1491,7 @@ void DS_TableCreateHash_Test_Nominal(void)
 
 void DS_TableCreateHash_Test_NullTable(void)
 {
-    DS_FilterTable_t  FilterTable;
+    DS_FilterTable_t  FilterTable = {0};
 
     DS_AppData.FilterTblPtr = &FilterTable;
 
@@ -1512,8 +1512,8 @@ void DS_TableFindMsgID_Test(void)
 {
     int32             Result;
     CFE_SB_MsgId_t    MessageID = 0x18BB;
-    DS_HashLink_t     HashLink;
-    DS_FilterTable_t  FilterTable;
+    DS_HashLink_t     HashLink = {0};
+    DS_FilterTable_t  FilterTable = {0};
 
     DS_AppData.FilterTblPtr = &FilterTable;
 

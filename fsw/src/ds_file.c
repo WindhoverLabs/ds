@@ -40,8 +40,8 @@
 
 void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr)
 {
-    DS_PacketEntry_t *PacketEntry = 0;
-    DS_FilterParms_t *FilterParms = &(DS_FilterParms_t) {0,0,0,0,0};
+    DS_PacketEntry_t *PacketEntry;
+    DS_FilterParms_t *FilterParms;
     boolean PassedFilter;
     boolean FilterResult;
     int32 FilterIndex;
@@ -496,10 +496,10 @@ void DS_FileCreateName(uint32 FileIndex)
 {
     DS_DestFileEntry_t *DestFile = &DS_AppData.DestFileTblPtr->File[FileIndex];
     DS_AppFileStatus_t *FileStatus = &DS_AppData.FileStatus[FileIndex];
-    int32 TotalLength;
+    int32 TotalLength = 0;
 
-    char Workname[2 * DS_TOTAL_FNAME_BUFSIZE];
-    char Sequence[DS_TOTAL_FNAME_BUFSIZE];
+    char Workname[2 * DS_TOTAL_FNAME_BUFSIZE] = "\0";
+    char Sequence[DS_TOTAL_FNAME_BUFSIZE] = "\0";
 
     Workname[0] = DS_STRING_TERMINATOR;
     Sequence[0] = DS_STRING_TERMINATOR;
