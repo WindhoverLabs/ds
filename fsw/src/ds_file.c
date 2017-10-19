@@ -40,8 +40,8 @@
 
 void DS_FileStorePacket(CFE_SB_MsgId_t MessageID, CFE_SB_MsgPtr_t MessagePtr)
 {
-    DS_PacketEntry_t *PacketEntry;
-    DS_FilterParms_t *FilterParms;
+    DS_PacketEntry_t *PacketEntry = 0;
+    DS_FilterParms_t *FilterParms = &(DS_FilterParms_t) {0,0,0,0,0};
     boolean PassedFilter;
     boolean FilterResult;
     int32 FilterIndex;

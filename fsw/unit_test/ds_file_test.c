@@ -74,7 +74,7 @@ int32 UT_DS_FILE_TEST_CFE_OSFILEAPI_WriteHook (int32  filedes, void *buffer, uin
 
 void DS_FileStorePacket_Test_Nominal(void)
 {
-    DS_NoopCmd_t        CmdPacket;
+    DS_NoopCmd_t        CmdPacket  = {0};
     CFE_SB_MsgId_t      MessageID = 0x18BB;
     DS_FilterTable_t    FilterTable;
     DS_DestFileTable_t  DestFileTable;

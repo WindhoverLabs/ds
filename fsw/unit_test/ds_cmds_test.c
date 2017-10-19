@@ -237,9 +237,9 @@ void DS_CmdSetAppState_Test_InvalidAppState(void)
 
 void DS_CmdSetFilterFile_Test_Nominal(void)
 {
-    DS_FilterFileCmd_t   CmdPacket;
-    DS_HashLink_t        HashLink;
-    DS_FilterTable_t     FilterTable;
+    DS_FilterFileCmd_t   CmdPacket = {0};
+    DS_HashLink_t        HashLink = {0};
+    DS_FilterTable_t     FilterTable = {0};
 
     CFE_SB_InitMsg (&CmdPacket, DS_CMD_MID, sizeof(DS_FilterFileCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, DS_SET_FILTER_FILE_CC);
