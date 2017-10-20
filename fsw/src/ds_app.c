@@ -58,7 +58,7 @@ DS_AppData_t DS_AppData;
 
 void DS_AppMain(void)
 {
-    CFE_SB_MsgPtr_t *MessagePtr = 0;
+    CFE_SB_MsgPtr_t MessagePtr;
     int32 Result;
     uint32 RunStatus = CFE_ES_APP_RUN;
 
@@ -104,7 +104,7 @@ void DS_AppMain(void)
         /*
         ** Wait for next Software Bus message...
         */
-        Result = CFE_SB_RcvMsg(MessagePtr, DS_AppData.InputPipe, CFE_SB_PEND_FOREVER);
+        Result = CFE_SB_RcvMsg(&MessagePtr, DS_AppData.InputPipe, CFE_SB_PEND_FOREVER);
 
         /*
         ** Performance Log (start time counter)...
@@ -116,7 +116,7 @@ void DS_AppMain(void)
         */
         if (Result == CFE_SUCCESS)
         {
-            DS_AppProcessMsg(&MessagePtr);
+            DS_AppProcessMsg(MessagePtr);
         }
         else
         {
