@@ -64,6 +64,9 @@ void DS_AppMain_Test_Nominal(void)
     /* Set to prevent call to CFE_SB_RcvMsg from returning an error */
     Ut_CFE_SB_SetReturnCode(UT_CFE_SB_RCVMSG_INDEX, CFE_SUCCESS, 1);
 
+    /* Don't act on uninitialized message pointer. */
+    Ut_CFE_SB_SetReturnCode(UT_CFE_SB_GETMSGID_INDEX, CFE_SUCCESS, 1);
+
     /* Execute the function being tested */
     DS_AppMain();
     
