@@ -1,0 +1,85 @@
+.row.os-theme-dark
+  article.col-xs-12.col-sm-12
+    header
+      span.widget-icon
+        i.fa.fa-table
+      h2 AMC - Command and Data Handling
+    div.widget-body.table-responsive
+      table.table.table-condensed
+        tbody
+          tr
+            th Cmd Count
+            td
+              div(data-cdr={tlm:[{name:'/AMC/AMC_HkTlm_t/usCmdCnt'}],indicator:'text'}) ---
+          tr
+            th Error Count
+            td
+              div(data-cdr={tlm:[{name:'/AMC/AMC_HkTlm_t/usCmdErrCnt'}],indicator:'text'}) ---
+          tr
+            th Output 0
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[0]'}], indicator:'text'}) ---
+          tr
+            th Output 1
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[1]'}], indicator:'text'}) ---
+          tr
+            th Output 2
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[2]'}], indicator:'text'}) ---
+          tr
+            th Output 3
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[3]'}], indicator:'text'}) ---
+          tr
+            th Output 4
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[4]'}], indicator:'text'}) ---
+          tr
+            th Output 5
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[5]'}], indicator:'text'}) ---
+          tr
+            th Output 6
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[6]'}], indicator:'text'}) ---
+          tr
+            th Output 7
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[7]'}], indicator:'text'}) ---
+          tr
+            th Output 8
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[8]'}], indicator:'text'}) ---
+          tr
+            th Output 9
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[9]'}], indicator:'text'}) ---
+          tr
+            th Output 10
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[10]'}], indicator:'text'}) ---
+          tr
+            th Output 11
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[11]'}], indicator:'text'}) ---
+          tr
+            th Output 12
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[12]'}], indicator:'text'}) ---
+          tr
+            th Output 13
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[13]'}], indicator:'text'}) ---
+          tr
+            th Output 14
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[14]'}], indicator:'text'}) ---
+          tr
+            th Output 15
+            td
+              span(data-cdr={tlm: [{name:'/AMC/AMC_HkTlm_t/Output[15]'}], indicator:'text'}) ---
+              
+    footer.btn-group(role="group")      
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/AMC/Noop'},indicator:'cmd'}) No-Op    
+      button.btn.cdr-outline-primary(data-cdr={cmd:{name:'/AMC/Reset'},indicator:'cmd'}) Reset
