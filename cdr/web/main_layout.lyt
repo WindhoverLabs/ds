@@ -40,76 +40,22 @@
    "title": "",
    "content": [
     {
-     "type": "column",
-     "isClosable": true,
-     "reorderEnabled": true,
-     "title": "",
-     "width": 25.080971659919026,
-     "content": [
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "width": 50,
-       "height": 50,
-       "content": [
-        {
-         "title": "Command and Data Handling",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/amc/cdh"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      },
-      {
-       "type": "stack",
-       "header": {},
-       "isClosable": true,
-       "reorderEnabled": true,
-       "title": "",
-       "activeItemIndex": 0,
-       "height": 50,
-       "content": [
-        {
-         "title": "Application Scheduling",
-         "type": "component",
-         "componentName": "Blank",
-         "componentState": {
-          "text": "text",
-          "link": "/sch/app_sch?appName=AMC"
-         },
-         "isClosable": true,
-         "reorderEnabled": true
-        }
-       ]
-      }
-     ]
-    },
-    {
      "type": "stack",
      "header": {},
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
+     "width": 46.820109024833435,
      "height": 100,
-     "width": 40.58873554839747,
      "content": [
       {
-       "title": "Actuator Outputs",
+       "title": "DS HK",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/amc/ao"
+        "link": "/ds/hk"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -123,15 +69,49 @@
      "reorderEnabled": true,
      "title": "",
      "activeItemIndex": 0,
-     "width": 34.3302927916835,
+     "width": 53.179890975166565,
+     "height": 100,
      "content": [
+      {
+       "title": "DS File Info",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/ds/file_info"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
       {
        "title": "Event Filter",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=AMC"
+        "link": "/cfe/evs/efltr?appName=DS"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Schedule Control",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/sch/app_sch?appName=DS"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Telemetry Control",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/to/tlm_app?appName=DS"
        },
        "isClosable": true,
        "reorderEnabled": true
