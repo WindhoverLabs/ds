@@ -8,7 +8,7 @@
 #DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "CFS Data Storage (DS) Application on @BUILD_CONFIG_NAME@ Detailed Design"
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/detailed_design/apps/ds
+OUTPUT_DIRECTORY       = @CFS_DOCS_HTML_DIR@/apps/ds/detailed_design
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -131,7 +131,7 @@ IGNORE_PREFIX          =
 # configuration options related to the HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
-HTML_OUTPUT            = @CFS_DOCS_HTML_DIR@/detailed_design/apps/ds
+HTML_OUTPUT            = @CFS_DOCS_HTML_DIR@/apps/ds/detailed_design
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = 
 HTML_FOOTER            = 
@@ -152,7 +152,7 @@ TREEVIEW_WIDTH         = 250
 # configuration options related to the LaTeX output
 #---------------------------------------------------------------------------
 GENERATE_LATEX         = NO
-LATEX_OUTPUT           = @CFS_DOCS_LATEX_DIR@/detailed_design/apps/ds
+LATEX_OUTPUT           = @CFS_DOCS_LATEX_DIR@/apps/ds/detailed_design
 LATEX_CMD_NAME         = latex
 MAKEINDEX_CMD_NAME     = makeindex
 COMPACT_LATEX          = YES
@@ -218,7 +218,7 @@ SKIP_FUNCTION_MACROS   = YES
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
 TAGFILES               = @CFS_DOCS_HTML_DIR@/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
-GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/detailed_design/apps/ds/ds.tag
+GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/apps/ds/detailed_design/ds.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
 PERL_PATH              = /usr/bin/perl
