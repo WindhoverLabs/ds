@@ -1,7 +1,0 @@
-syntax = "proto2";
-
-message es_log_pb
-{
-	required uint32 Mode = 1;
-}
-

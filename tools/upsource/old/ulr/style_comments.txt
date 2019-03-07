@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-Remove lines between includes, refer to line 57 as well 
-http://18.188.47.171:8080/ulr/review/ULR-CR-1?commentId=f91b03c9-5974-46e5-9069-ba44f413ca23&filePath=/fsw/src/ulr_app.h   
-

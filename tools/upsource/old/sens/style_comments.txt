@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-Case and default constructs shall be enclosed in curly braces. 
-http://18.188.47.171:8080/sens/review/SNS-CR-1?commentId=e8e7d55b-80c1-4dfb-9ede-ea04cf36c254&filePath=/fsw/src/sens_app.cpp   
-

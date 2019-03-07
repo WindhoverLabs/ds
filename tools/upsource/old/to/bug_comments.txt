@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-Review the cleanup function and ensure it doesn't call any CFE functions.  The delete handler is called with a CFE ES context, not the application. 
-http://18.188.47.171:8080/to/review/TO-CR-1?commentId=dc3b4773-8756-4d49-9fc6-56deb3d95f4a&filePath=/fsw/src/app.c   
-

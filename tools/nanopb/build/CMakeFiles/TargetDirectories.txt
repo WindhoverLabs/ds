@@ -1,7 +1,0 @@
-/home/mbenson/git/Firmware/src/modules/cfs_bridge/nanopb/build/CMakeFiles/install.dir
-/home/mbenson/git/Firmware/src/modules/cfs_bridge/nanopb/build/CMakeFiles/list_install_components.dir
-/home/mbenson/git/Firmware/src/modules/cfs_bridge/nanopb/build/CMakeFiles/rebuild_cache.dir
-/home/mbenson/git/Firmware/src/modules/cfs_bridge/nanopb/build/CMakeFiles/libprotobuf-nanopb.dir
-/home/mbenson/git/Firmware/src/modules/cfs_bridge/nanopb/build/CMakeFiles/install/strip.dir
-/home/mbenson/git/Firmware/src/modules/cfs_bridge/nanopb/build/CMakeFiles/install/local.dir
-/home/mbenson/git/Firmware/src/modules/cfs_bridge/nanopb/build/CMakeFiles/edit_cache.dir

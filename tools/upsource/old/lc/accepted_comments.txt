@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-Remove the lc_platform_cfg.h file from the CMakeLists.txt file.  We're building using as-built, not as-designed. 
-http://18.188.47.171:8080/lc/review/LC-CR-1?commentId=162a8941-5835-4439-9baa-1fbb928fa433&filePath=/fsw/for_build/CMakeLists.txt   
-

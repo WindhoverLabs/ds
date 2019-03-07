@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-I think this is a typo.  I think all mentions of table 2 should really be table 1. 
-http://18.188.47.171:8080/md/review/MD-CR-1?commentId=927ece35-7daf-4367-b996-2e993611a904&filePath=/fsw/tables/md_dw01.c   
-

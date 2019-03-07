@@ -1,2 +1,0 @@
-/usr/bin/ar qc liblibprotobuf-nanopb.a  CMakeFiles/libprotobuf-nanopb.dir/pb_common.c.o CMakeFiles/libprotobuf-nanopb.dir/pb_encode.c.o CMakeFiles/libprotobuf-nanopb.dir/pb_decode.c.o
-/usr/bin/ranlib liblibprotobuf-nanopb.a

@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-verify spacing 
-http://18.188.47.171:8080/rcin/review/RCN-CR-1?commentId=2f502e09-e0d0-4c6a-94d1-cdd98eebf491&filePath=/fsw/src/rcin_app.h   
-

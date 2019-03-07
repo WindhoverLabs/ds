@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-Initialize this value 
-http://18.188.47.171:8080/ds/review/DS-CR-1?commentId=b85ef6fa-f7dc-430e-9120-ac12b6a5443c&filePath=/fsw/src/ds_app.c   
-

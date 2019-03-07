@@ -1,6 +1,0 @@
-Total issues: 1   
-
-Discussion comment: 1   
-Change to OS_printf 
-http://18.188.47.171:8080/psp/review/PSP-CR-1?commentId=876303dd-bc04-48f7-8fd3-19de16c984b8&filePath=/fsw/ocpoc-linux/src/cfe_psp_support.c   
-
