@@ -55,7 +55,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/ds/hk"
+        "link": "flight/apps/ds/hk"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -78,7 +78,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/ds/file_info"
+        "link": "flight/apps/ds/file_info"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -89,7 +89,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/cfe/evs/efltr?appName=DS"
+        "link": "flight/core/evs/efltr?appName=DS"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -100,7 +100,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/sch/app_sch?appName=DS"
+        "link": "flight/apps/sch/app_sch?appName=DS"
        },
        "isClosable": true,
        "reorderEnabled": true
@@ -111,7 +111,7 @@
        "componentName": "Blank",
        "componentState": {
         "text": "text",
-        "link": "/to/tlm_app?appName=DS"
+        "link": "flight/apps/to/tlm_app?appName=DS"
        },
        "isClosable": true,
        "reorderEnabled": true
