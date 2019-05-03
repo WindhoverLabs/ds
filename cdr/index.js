@@ -5,8 +5,10 @@ var path = require('path');
 const CdrFlightAppsPlugin = require(path.join(global.CDR_INSTALL_DIR, '/commander/classes/CdrFlightAppsPlugin')).CdrFlightAppsPlugin;
 
 module.exports = class CfeCdrFlightAppsPlugin extends CdrFlightAppsPlugin {
-    constructor() {
-        super(path.join(__dirname, 'web'));
+    constructor(config) {
+        config.name = 'ds';
+        config.webRoot = path.join( __dirname, 'web');  
+        super(config);
 
         var content = {
             ds: {    		
