@@ -1,0 +1,37 @@
+- queryString = '$.Airliner.apps.DS.config.DS_DEST_FILE_CNT';
+-
+- global.COMMANDER.queryConfigDB(queryString, function (results) {
+-     DS_DEST_FILE_CNT = results[0];
+
+table.table.table-condensed
+  tbody
+    tr
+      th Entry ID
+      th File Name
+      th Age
+      th Size
+      th Rate
+      th Count
+      th Enable State
+      th Open State
+    - for(var i = 0; i < DS_DEST_FILE_CNT; ++i) {
+    tr
+      td
+         div(data-cdr={tlm:[{name:'/DS/DS_FileInfoPkt_t/FileInfo[' + i + '].FileName'}]}) ---
+      td
+         div(data-cdr={tlm:[{name:'/DS/DS_FileInfoPkt_t/FileInfo[' + i + '].FileAge'}]}) ---
+      td
+         div(data-cdr={tlm:[{name:'/DS/DS_FileInfoPkt_t/FileInfo[' + i + '].FileSize'}]}) ---
+      td
+         div(data-cdr={tlm:[{name:'/DS/DS_FileInfoPkt_t/FileInfo[' + i + '].FileRate'}]}) ---
+      td
+         div(data-cdr={tlm:[{name:'/DS/DS_FileInfoPkt_t/FileInfo[' + i + '].SequenceCount'}]}) ---
+      td
+         div(data-cdr={tlm:[{name:'/DS/DS_FileInfoPkt_t/FileInfo[' + i + '].EnableState'}]}) ---
+      td
+         div(data-cdr={tlm:[{name:'/DS/DS_FileInfoPkt_t/FileInfo[' + i + '].OpenState'}]}) ---
+    - }
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_GetFileInfoCmd_t'}}) Get File Info
+- });

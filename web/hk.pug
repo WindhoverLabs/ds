@@ -1,0 +1,102 @@
+table.table.table-condensed
+  tbody
+    tr
+      th Commands Accepted
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/CmdAcceptedCounter'}]}) ---
+      td
+    tr
+      th Commands Rejected
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/CmdRejectedCounter'}]}) ---
+      td
+    tr
+      th Dest Table Load Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/DestTblLoadCounter'}]}) ---
+      td
+    tr
+      th Dest Table Err Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/DestTblErrCounter'}]}) ---
+      td
+    tr
+      th Filter Table Load Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FilterTblLoadCounter'}]}) ---
+      td
+    tr
+      th Filter Table Err Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FilterTblErrCounter'}]}) ---
+      td
+    tr
+      th App Enable State
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/AppEnableState'}]}) ---
+      td.btn-group(role="group") 
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_AppStateCmd_t'}}) Enable
+        button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_AppStateCmd_t'}}) Disable    
+    tr
+      th File Write Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FileWriteCounter'}]}) ---
+      td
+    tr
+      th File Write Err Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FileWriteErrCounter'}]}) ---
+      td
+    tr
+      th File Update Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FileUpdateCounter'}]}) ---
+      td
+    tr
+      th File Update Err Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FileUpdateErrCounter'}]}) ---
+      td
+    tr
+      th Disabled Packet Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/DisabledPktCounter'}]}) ---
+      td
+    tr
+      th Ignored Packet Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/IgnoredPktCounter'}]}) ---
+      td
+    tr
+      th Filtered Packet Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FilteredPktCounter'}]}) ---
+      td
+    tr
+      th Pass Packet Counter
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/PassedPktCounter'}]}) ---
+      td
+    tr
+      th Filter Tabled Filename
+      td
+        div(data-cdr={tlm:[{name:'/DS/DS_HkPacket_t/FilterTblFilename'}]}) ---
+      td
+              
+footer.btn-group(role="group")      
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_NoopCmd_t'}}) No-Op    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_ResetCmd_t'}}) Reset
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_FilterFileCmd_t'}}) Filter File    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_FilterTypeCmd_t'}}) Filter Type
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_FilterParmsCmd_t'}}) Filter Params   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestTypeCmd_t'}}) Destination Type   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestStateCmd_t'}}) Destination State
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestPathCmd_t'}}) Destination Path    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestBaseCmd_t'}}) Destination Base   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestExtCmd_t'}}) Destination Ext   
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestSizeCmd_t'}}) Destination Size  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestAgeCmd_t'}}) Destination Age    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_DestCountCmd_t'}}) Destination Count    
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_CloseFileCmd_t'}}) Close File        
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_CloseAllCmd_t'}}) Close All  
+  button.btn.cdr-primary(data-cdr={cmd:{name:'/DS/DS_AddMidCmd_t'}}) Add Msg ID    
