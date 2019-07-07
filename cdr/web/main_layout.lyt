@@ -1,4 +1,4 @@
-﻿{
+{
  "settings": {
   "hasHeaders": true,
   "constrainDragToContainer": false,
@@ -40,25 +40,56 @@
    "title": "",
    "content": [
     {
-     "type": "stack",
-     "header": {},
+     "type": "column",
      "isClosable": true,
      "reorderEnabled": true,
      "title": "",
-     "activeItemIndex": 0,
      "width": 46.820109024833435,
-     "height": 100,
      "content": [
       {
-       "title": "DS HK",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/ds/hk"
-       },
+       "type": "stack",
+       "header": {},
        "isClosable": true,
-       "reorderEnabled": true
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "width": 46.820109024833435,
+       "height": 50,
+       "content": [
+        {
+         "title": "DS HK",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/ds/hk"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
+      },
+      {
+       "type": "stack",
+       "header": {},
+       "isClosable": true,
+       "reorderEnabled": true,
+       "title": "",
+       "activeItemIndex": 0,
+       "height": 50,
+       "content": [
+        {
+         "title": "DS File Info",
+         "type": "component",
+         "componentName": "Blank",
+         "componentState": {
+          "text": "text",
+          "link": "flight/apps/ds/file_info"
+         },
+         "isClosable": true,
+         "reorderEnabled": true
+        }
+       ]
       }
      ]
     },
@@ -73,18 +104,7 @@
      "height": 100,
      "content": [
       {
-       "title": "DS File Info",
-       "type": "component",
-       "componentName": "Blank",
-       "componentState": {
-        "text": "text",
-        "link": "flight/apps/ds/file_info"
-       },
-       "isClosable": true,
-       "reorderEnabled": true
-      },
-      {
-       "title": "Event Filter",
+       "title": "Events",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -95,7 +115,18 @@
        "reorderEnabled": true
       },
       {
-       "title": "Schedule Control",
+       "title": "App Ctrl",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/es/appctrl?appName=DS"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Scheduling",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
@@ -106,12 +137,23 @@
        "reorderEnabled": true
       },
       {
-       "title": "Telemetry Control",
+       "title": "Telemetry",
        "type": "component",
        "componentName": "Blank",
        "componentState": {
         "text": "text",
         "link": "flight/apps/to/tlm_app?appName=DS"
+       },
+       "isClosable": true,
+       "reorderEnabled": true
+      },
+      {
+       "title": "Tables",
+       "type": "component",
+       "componentName": "Blank",
+       "componentState": {
+        "text": "text",
+        "link": "/flight/core/tbl/tbl_ctl?appName=DS"
        },
        "isClosable": true,
        "reorderEnabled": true
