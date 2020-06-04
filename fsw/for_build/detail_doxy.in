@@ -217,7 +217,7 @@ SKIP_FUNCTION_MACROS   = YES
 #---------------------------------------------------------------------------
 # Configuration::additions related to external references   
 #---------------------------------------------------------------------------
-TAGFILES               = @CFS_DOCS_HTML_DIR@/detailed_design/cfe/cfe.tag=../../../detailed_design/cfe/
+TAGFILES               = @CFS_DOCS_HTML_DIR@/cfe/detailed_design/cfe.tag=../../../cfe/detailed_design/
 GENERATE_TAGFILE       = @CFS_DOCS_HTML_DIR@/apps/ds/detailed_design/ds.tag
 ALLEXTERNALS           = NO
 EXTERNAL_GROUPS        = YES
