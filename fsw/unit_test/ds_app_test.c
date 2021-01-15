@@ -372,7 +372,7 @@ void DS_AppProcessMsg_Test_Cmd(void)
     DS_AppData.HashTable[187] = &HashLink;
     HashLink.Index = 0;
     DS_AppData.FilterTblPtr = &FilterTable;
-    DS_AppData.FilterTblPtr->Packet->MessageID = 6331;
+    DS_AppData.FilterTblPtr->Packet->MessageID = DS_CMD_MID;
 
     CFE_SB_InitMsg (&CmdPacket, DS_CMD_MID, sizeof(DS_NoopCmd_t), TRUE);
     CFE_SB_SetCmdCode((CFE_SB_MsgPtr_t)&CmdPacket, DS_NOOP_CC);
