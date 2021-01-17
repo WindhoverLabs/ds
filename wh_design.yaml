@@ -105,6 +105,16 @@
       id: 66
     DS_CLOSE_ALL_CMD_ERR_EID: 
       id: 67
+  msg_def_overrides:
+    - parent: DS_HkPacket_t
+      member: FilterTblFilename
+      type: string
+    - parent: DS_FileInfo_t
+      member: FileName
+      type: string
+    - parent: DS_DestPathCmd_t
+      member: Pathname
+      type: string
   telemetry: 
     DS_HK_TLM_MID: 
       msgID: 
