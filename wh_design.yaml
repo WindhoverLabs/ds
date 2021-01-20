@@ -124,7 +124,7 @@
       struct: DS_FileInfoPkt_t
   commands: 
     DS_CMD_MID: 
-      msgid: 
+      msgID: 
       commands: 
         Noop: 
           cc: 0
@@ -181,7 +181,7 @@
           cc: 17
           struct: DS_CloseAllCmd_t
     DS_SEND_HK_MID: 
-      msgid: 
+      msgID: 
       commands: 
         SendHK: 
           cc: 0
