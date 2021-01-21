@@ -273,4 +273,5 @@
       value: 50
     DS_PER_PACKET_PIPE_LIMIT: 
       name: DS_PER_PACKET_PIPE_LIMIT
-      value: 
+      value: 1
+
