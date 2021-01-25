@@ -31,7 +31,7 @@
  #
  #############################################################################
  
-add_airliner_app_def(ds
+buildliner_add_app_def(ds
     FILE DS
     SOURCES
         ${CMAKE_CURRENT_SOURCE_DIR}/../src/ds_app.c
@@ -59,7 +59,7 @@ add_airliner_app_def(ds
 )
 
 
-add_airliner_app_unit_test(ds-ut
+buildliner_add_app_def(ds-ut
     UTASSERT
     NO_HELGRIND
     NO_MASSIF
