@@ -509,19 +509,35 @@ void DS_FileCreateDest_Test_Error(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
     DS_DestFileTable_t  DestFileTable = {0};
+    char                text[500] = {""};
+    char                sequence[DS_SEQUENCE_DIGITS+1] = {""};
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
     DS_AppData.DestFileTblPtr->File[FileIndex].FileNameType = DS_BY_COUNT;
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Pathname, "path", OS_MAX_PATH_LEN);
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Basename, "basename", OS_MAX_PATH_LEN);
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Extension, "extension", OS_MAX_PATH_LEN);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Pathname, "path", DS_PATHNAME_BUFSIZE);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Basename, "basename", DS_BASENAME_BUFSIZE);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Extension, "extension", DS_EXTENSION_BUFSIZE);
+    DS_AppData.DestFileTblPtr->File[FileIndex].Pathname[DS_PATHNAME_BUFSIZE-1] = 0;
+    DS_AppData.DestFileTblPtr->File[FileIndex].Basename[DS_BASENAME_BUFSIZE-1] = 0;
+    DS_AppData.DestFileTblPtr->File[FileIndex].Extension[DS_EXTENSION_BUFSIZE-1] = 0;
 
     DS_AppData.FileStatus[FileIndex].FileHandle = 99;
     DS_AppData.FileStatus[FileIndex].FileCount = DS_MAX_SEQUENCE_COUNT + 1;
 
     /* Set to generate error message DS_CREATE_FILE_ERR_EID */
     Ut_OSFILEAPI_SetReturnCode(UT_OSFILEAPI_CREAT_INDEX, -1, 1);
+
+    for(uint32 i = 0; i < DS_SEQUENCE_DIGITS; ++i)
+    {
+    	strcat(sequence, "0");
+    }
+
+    sprintf(text, "FILE CREATE error: result = -1, dest = 0, name = '%s/%s%s.%s'",
+    		      DS_AppData.DestFileTblPtr->File[FileIndex].Pathname,
+    		      DS_AppData.DestFileTblPtr->File[FileIndex].Basename,
+				  sequence,
+    		      DS_AppData.DestFileTblPtr->File[FileIndex].Extension);
 
     /* Execute the function being tested */
     DS_FileCreateDest(FileIndex);
@@ -530,9 +546,9 @@ void DS_FileCreateDest_Test_Error(void)
     UtAssert_True (DS_AppData.FileWriteErrCounter == 1, "DS_AppData.FileWriteErrCounter == 1");
 
     /* For this test it doesn't matter what filename results from the call to DS_FileCreateName. */
+
     UtAssert_True
-        (Ut_CFE_EVS_EventSent(DS_CREATE_FILE_ERR_EID, CFE_EVS_ERROR, "FILE CREATE error: result = -1, dest = 0, name = 'path/basename.extension'"),
-        "FILE CREATE error: result = -1, dest = 0, name = 'path/basename.extension'");
+        (Ut_CFE_EVS_EventSent(DS_CREATE_FILE_ERR_EID, CFE_EVS_ERROR, text), text);
 
     UtAssert_True
         (strncmp (DS_AppData.FileStatus[FileIndex].FileName, "", DS_TOTAL_FNAME_BUFSIZE) == 0,
@@ -548,15 +564,33 @@ void DS_FileCreateName_Test_Nominal(void)
 {
     CFE_SB_MsgId_t      FileIndex = 0;
     DS_DestFileTable_t  DestFileTable = {0};
+    char                text[500] = {""};
+    char                sequence[DS_SEQUENCE_DIGITS+1] = {""};
+    uint32              i;
 
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
     DS_AppData.DestFileTblPtr->File[FileIndex].FileNameType = DS_BY_COUNT;
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Pathname, "path", OS_MAX_PATH_LEN);
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Basename, "basename", OS_MAX_PATH_LEN);
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Extension, "extension", OS_MAX_PATH_LEN);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Pathname, "path", DS_PATHNAME_BUFSIZE);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Basename, "basename", DS_BASENAME_BUFSIZE);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Extension, "extension", DS_EXTENSION_BUFSIZE);
+    DS_AppData.DestFileTblPtr->File[FileIndex].Pathname[DS_PATHNAME_BUFSIZE-1] = 0;
+    DS_AppData.DestFileTblPtr->File[FileIndex].Basename[DS_BASENAME_BUFSIZE-1] = 0;
+    DS_AppData.DestFileTblPtr->File[FileIndex].Extension[DS_EXTENSION_BUFSIZE-1] = 0;
 
     DS_AppData.FileStatus[FileIndex].FileCount = 1;
+
+    for(i = 0; i < DS_SEQUENCE_DIGITS - 1; ++i)
+    {
+    	strcat(sequence, "0");
+    }
+    strcat(sequence, "1");
+
+    sprintf(text, "%s/%s%s.%s",
+    		      DS_AppData.DestFileTblPtr->File[FileIndex].Pathname,
+    		      DS_AppData.DestFileTblPtr->File[FileIndex].Basename,
+				  sequence,
+    		      DS_AppData.DestFileTblPtr->File[FileIndex].Extension);
 
 
     /* Execute the function being tested */
@@ -564,7 +598,7 @@ void DS_FileCreateName_Test_Nominal(void)
     
     /* Verify results */
     UtAssert_True
-        (strncmp (DS_AppData.FileStatus[FileIndex].FileName, "path/basename.extension", DS_TOTAL_FNAME_BUFSIZE) == 0,
+        (strncmp (DS_AppData.FileStatus[FileIndex].FileName, text, DS_TOTAL_FNAME_BUFSIZE) == 0,
         "strncmp (DS_AppData.FileStatus[FileIndex].FileName, 'path/basename.extension', DS_TOTAL_FNAME_BUFSIZE) == 0");
 
     UtAssert_True (Ut_CFE_EVS_GetEventQueueDepth() == 0, "Ut_CFE_EVS_GetEventQueueDepth() == 0");
@@ -581,8 +615,8 @@ void DS_FileCreateName_Test_Error(void)
     DS_AppData.DestFileTblPtr = &DestFileTable;
 
     DS_AppData.DestFileTblPtr->File[FileIndex].FileNameType = DS_BY_COUNT;
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Pathname, "path", OS_MAX_PATH_LEN);
-    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Extension, "extension", OS_MAX_PATH_LEN);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Pathname, "path", DS_PATHNAME_BUFSIZE);
+    strncpy (DS_AppData.DestFileTblPtr->File[FileIndex].Extension, "extension", DS_EXTENSION_BUFSIZE);
 
     for (i = 0; i < DS_TOTAL_FNAME_BUFSIZE - 2; i++)
     {
