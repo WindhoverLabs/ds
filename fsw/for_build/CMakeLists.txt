@@ -59,7 +59,7 @@ buildliner_add_app_def(ds
 )
 
 
-buildliner_add_app_def(ds-ut
+buildliner_add_app_unit_test(ds-ut
     UTASSERT
     NO_HELGRIND
     NO_MASSIF
